@@ -114,4 +114,11 @@ final class LocaleResolver
         return $this->getSupportedLocales()
             ->except($existingLocaleCodes);
     }
+
+    public function forget(): void
+    {
+        $this->locales = null;
+        $this->supportedLocales = null;
+        $this->defaultLocale = null;
+    }
 }

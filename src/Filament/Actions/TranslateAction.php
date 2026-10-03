@@ -23,7 +23,7 @@ use Tipi\Localization\Contracts\TranslatableModel;
 use Tipi\Localization\Contracts\TranslationModel;
 use Tipi\Localization\Exceptions\TranslationAlreadyExistsException;
 use Tipi\Localization\LocaleResolver;
-use Tipi\Support\Filament\FilamentValidator;
+use Tipi\Localization\Support\Filament\FilamentValidator;
 
 class TranslateAction extends Action
 {

@@ -75,10 +75,11 @@ abstract class TranslationRules
     protected static function localeRules(): array
     {
         return [
-            'locale_id' => [
+            'locale_code' => [
                 'sometimes',
-                'integer',
-                'exists:locales,id',
+                'string',
+                'max:10',
+                'exists:locales,code',
             ],
         ];
     }
@@ -86,14 +87,14 @@ abstract class TranslationRules
     protected static function localeMessages(): array
     {
         return [
-            'locale_id.exists' => 'The selected locale is not supported.',
+            'locale_code.exists' => 'The selected locale is not supported.',
         ];
     }
 
     protected static function localeAttributes(): array
     {
         return [
-            'locale_id' => 'locale',
+            'locale_code' => 'locale',
         ];
     }
 }

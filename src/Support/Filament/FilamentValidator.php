@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tipi\Support\Filament;
+namespace Tipi\Localization\Support\Filament;
 
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;

@@ -21,13 +21,13 @@ final readonly class MakeLocaleDefault
                 ->lockForUpdate()
                 ->findOrFail($localeCode);
 
-            Locale::query()
-                ->whereKeyNot($locale->getKey())
-                ->update(['is_default' => false]);
-
             if (! $locale->canBeMadeDefault()) {
                 throw new LocaleCannotBeMadeDefault($locale->getKey());
             }
+
+            Locale::query()
+                ->whereKeyNot($locale->getKey())
+                ->update(['is_default' => false]);
 
             $locale->is_default = true;
             $locale->save();

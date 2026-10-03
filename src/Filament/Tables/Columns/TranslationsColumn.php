@@ -2,23 +2,23 @@
 
 declare(strict_types=1);
 
-namespace App\Localization\Filament\Tables\Columns;
+namespace Tipi\Localization\Filament\Tables\Columns;
 
-use App\Localization\LocaleResolver;
-use App\Localization\Models\Contracts\TranslatableModel;
-use App\Localization\Models\Locale;
 use Closure;
 use Filament\Tables\Columns\Column;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\HtmlString;
 use Mcamara\LaravelLocalization\Exceptions\SupportedLocalesNotDefined;
+use Tipi\Localization\Contracts\TranslatableModel;
+use Tipi\Localization\LocaleResolver;
+use Tipi\Localization\Models\Locale;
 
 class TranslationsColumn extends Column
 {
-    protected string $view = 'localization.filament.tables.columns.translations-column';
+    protected string $view = 'tipi-localization::filament.tables.columns.translations-column';
 
-    protected string $headerView = 'localization.filament.tables.columns.translations-column-header';
+    protected string $headerView = 'tipi-localization::filament.tables.columns.translations-column-header';
 
     public function getHeaderView(): string
     {

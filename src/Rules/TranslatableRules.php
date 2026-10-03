@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tipi\Localization\Rules;
 
-use App\Support\ArrayHelper;
 use Illuminate\Database\Eloquent\Model;
+use Tipi\Localization\Support\ArrayHelper;
 
 abstract class TranslatableRules
 {
@@ -14,7 +14,7 @@ abstract class TranslatableRules
         return [
             ...static::modelRules(),
             ...static::modelCreateRules($data),
-            ...\Tipi\Support\ArrayHelper::prefixKeys(
+            ...ArrayHelper::prefixKeys(
                 items: static::translationRules()::create(),
                 prefix: 'translation',
             ),

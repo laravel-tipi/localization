@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tipi\Support;
+namespace Tipi\Localization\Support;
 
 final class ArrayHelper
 {

@@ -1,0 +1,33 @@
+{
+    "name": "tipi/laravel-localization",
+    "description": "Database-driven localization and model translations for Laravel.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Irakli",
+            "email": "iraklikevkhishvili@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.5",
+        "mcamara/laravel-localization": "^2.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Tipi\\Localization\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Tipi\\Localization\\LocalizationServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

@@ -1,6 +1,6 @@
 {
-    "name": "tipi/laravel-localization",
-    "description": "Database-driven localization and model translations for Laravel.",
+    "name": "laravel-tipi/localization",
+    "description": "Localization and localized routing for Laravel.",
     "type": "library",
     "license": "MIT",
     "authors": [

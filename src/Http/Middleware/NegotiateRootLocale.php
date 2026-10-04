@@ -45,10 +45,6 @@ final readonly class NegotiateRootLocale
             return false;
         }
 
-        if ($this->config->negotiatedRootRouteName === null) {
-            return false;
-        }
-
         return $request->route()?->getName()
             === "__localized.default.{$this->config->negotiatedRootRouteName}";
     }

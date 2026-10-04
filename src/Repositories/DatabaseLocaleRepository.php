@@ -6,10 +6,14 @@ namespace Tipi\Localization\Repositories;
 
 use Illuminate\Support\Collection;
 use Tipi\Localization\Contracts\LocaleRepository;
+use Tipi\Localization\Locale;
 use Tipi\Localization\Models\LocaleModel;
 
 final class DatabaseLocaleRepository implements LocaleRepository
 {
+    /**
+     * @return Collection<string, Locale>
+     */
     public function all(): Collection
     {
         return LocaleModel::query()

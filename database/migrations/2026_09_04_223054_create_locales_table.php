@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('native_name');
             $table->string('country_code', 2)->nullable();
+            $table->string('text_direction', 3)->default('ltr');
             $table->boolean('is_active')->default(false)->index();
             $table->boolean('is_default')->default(false);
 

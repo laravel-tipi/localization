@@ -21,16 +21,6 @@ final readonly class LocaleNegotiator
         return $this->fromCookie($request)
             ?? $this->fromBrowser($request)
             ?? $this->locales->default();
-
-        /*$preferred = $request->getPreferredLanguage(
-            $this->locales->supportedCodes(),
-        );
-
-        if ($preferred !== null) {
-            return $this->locales->supportedLocale($preferred);
-        }
-
-        return $this->locales->default();*/
     }
 
     private function fromCookie(Request $request): ?Locale

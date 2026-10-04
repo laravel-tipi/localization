@@ -7,6 +7,8 @@ namespace Tipi\Localization;
 use Illuminate\Support\ServiceProvider;
 use Tipi\Localization\Config\LocalizationConfig;
 use Tipi\Localization\Contracts\LocaleRepository;
+use Tipi\Localization\Enums\LocaleDriver;
+use Tipi\Localization\Repositories\ConfigLocaleRepository;
 use Tipi\Localization\Repositories\DatabaseLocaleRepository;
 
 final class LocalizationServiceProvider extends ServiceProvider
@@ -21,6 +23,14 @@ final class LocalizationServiceProvider extends ServiceProvider
         $this->app->singleton(
             LocalizationConfig::class,
             fn (): LocalizationConfig => new LocalizationConfig(
+                localesDriver: LocaleDriver::from(
+                    config(
+                        'localization.locales_driver',
+                        'database'
+                    ),
+                ),
+                locales: (array) config('localization.locales', []),
+                defaultLocale: config('localization.default_locale'),
                 hideDefaultLocale: (bool) config(
                     'localization.hide_default_locale',
                     true
@@ -46,14 +56,18 @@ final class LocalizationServiceProvider extends ServiceProvider
 
         $this->app->bind(
             LocaleRepository::class,
-            DatabaseLocaleRepository::class,
+            fn ($app): LocaleRepository => match (
+                $app->make(LocalizationConfig::class)->localesDriver
+            ) {
+                LocaleDriver::Database => $app->make(DatabaseLocaleRepository::class),
+                LocaleDriver::Config => $app->make(ConfigLocaleRepository::class),
+            },
         );
 
         $this->app->scoped(LocaleRegistry::class);
         $this->app->scoped(LocaleResolver::class);
         $this->app->scoped(LocaleNegotiator::class);
         $this->app->scoped(Localization::class);
-
     }
 
     public function boot(): void

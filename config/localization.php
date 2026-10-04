@@ -5,6 +5,33 @@ declare(strict_types=1);
 return [
     /*
     |--------------------------------------------------------------------------
+    | Locales Driver
+    |--------------------------------------------------------------------------
+    |
+    | 'database' locales are obtained from locales table.
+    | 'config' locales are obtained from 'locales' array in this config file.
+    |
+    */
+    'locales_driver' => 'config',
+
+    'locales' => [
+        ['code' => 'en', 'name' => 'English', 'native_name' => 'English', 'country_code' => 'GB', 'text_direction' => 'ltr'],
+        ['code' => 'ka', 'name' => 'Georgian', 'native_name' => 'ქართული', 'country_code' => 'GE', 'text_direction' => 'ltr'],
+        ['code' => 'ru', 'name' => 'Russian', 'native_name' => 'Руский', 'country_code' => 'RU', 'text_direction' => 'ltr'],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Default Locale
+    |--------------------------------------------------------------------------
+    |
+    | Set only when the 'locale_driver' is 'config'
+    |
+    */
+    'default_locale' => 'ka',
+
+    /*
+    |--------------------------------------------------------------------------
     | Hide Default Locale
     |--------------------------------------------------------------------------
     |

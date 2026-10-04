@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tipi\Localization;
 
+use Tipi\Localization\Enums\TextDirection;
+
 final readonly class Locale
 {
     public function __construct(
@@ -11,6 +13,7 @@ final readonly class Locale
         public string $name,
         public string $nativeName,
         public ?string $countryCode,
+        public TextDirection $textDirection,
         private bool $active,
         private bool $default,
     ) {}

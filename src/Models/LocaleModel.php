@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Tipi\Localization\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Tipi\Localization\Enums\TextDirection;
 use Tipi\Localization\Locale;
-
 
 class LocaleModel extends Model
 {
@@ -26,6 +26,7 @@ class LocaleModel extends Model
     protected function casts(): array
     {
         return [
+            'text_direction' => TextDirection::class,
             'is_active' => 'bool',
             'is_default' => 'bool',
         ];
@@ -39,6 +40,7 @@ class LocaleModel extends Model
             name: $this->name,
             nativeName: $this->native_name,
             countryCode: $this->country_code,
+            textDirection: $this->text_direction,
             active: $this->is_active,
             default: $this->is_default,
         );

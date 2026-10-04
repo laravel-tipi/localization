@@ -6,7 +6,7 @@ namespace Tipi\Localization\Exceptions;
 
 use RuntimeException;
 
-final class TranslationAlreadyExistsExceptionException extends RuntimeException
+final class TranslationAlreadyExistsException extends RuntimeException
 {
     public function __construct(string $code)
     {

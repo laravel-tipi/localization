@@ -11,10 +11,7 @@
     ],
     "require": {
         "php": "^8.5",
-        "mcamara/laravel-localization": "^2.4.2",
-        "filament/filament": "^5.8.2",
-        "stijnvanouplines/blade-country-flags": "^1.0.9",
-        "craft-forge/filament-language-switcher": "^1.2.1"
+        "stijnvanouplines/blade-country-flags": "^1.0.9"
     },
     "autoload": {
         "psr-4": {

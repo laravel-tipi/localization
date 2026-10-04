@@ -8,6 +8,6 @@ final class UnsupportedLocaleException extends LocaleException
 {
     public function __construct(string $code)
     {
-        parent::__construct("LocaleModel [$code] is not supported");
+        parent::__construct("Locale [$code] is not supported");
     }
 }

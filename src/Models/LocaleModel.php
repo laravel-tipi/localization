@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Tipi\Localization\Models;
 
-use Illuminate\Database\Eloquent\Attributes\Scope;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Tipi\Localization\Locale;
 
-class Locale extends Model
+
+class LocaleModel extends Model
 {
     protected $primaryKey = 'code';
 
@@ -17,6 +17,11 @@ class Locale extends Model
     protected $keyType = 'string';
 
     public $timestamps = false;
+
+    /**
+     * @var null|string
+     */
+    protected $table = 'locales';
 
     protected function casts(): array
     {
@@ -27,6 +32,18 @@ class Locale extends Model
     }
 
     // helpers
+    public function toLocale(): Locale
+    {
+        return new Locale(
+            code: $this->code,
+            name: $this->name,
+            nativeName: $this->native_name,
+            countryCode: $this->country_code,
+            active: $this->is_active,
+            default: $this->is_default,
+        );
+    }
+
     public function isActive(): bool
     {
         return $this->is_active;
@@ -55,18 +72,5 @@ class Locale extends Model
     public function canBeDeactivated(): bool
     {
         return $this->isActive() && ! $this->isDefault();
-    }
-
-    // scopes
-    #[Scope]
-    protected function active(Builder $query): Builder
-    {
-        return $query->where('is_active', true);
-    }
-
-    #[Scope]
-    protected function default(Builder $query): Builder
-    {
-        return $query->where('is_default', true);
     }
 }

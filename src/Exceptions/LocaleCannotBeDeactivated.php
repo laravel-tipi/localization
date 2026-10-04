@@ -8,6 +8,6 @@ final class LocaleCannotBeDeactivated extends LocaleException
 {
     public function __construct(string $code)
     {
-        parent::__construct("Locale [$code] cannot be deactivated.");
+        parent::__construct("LocaleModel [$code] cannot be deactivated.");
     }
 }

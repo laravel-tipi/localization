@@ -8,6 +8,6 @@ final class LocaleCannotBeMadeDefault extends LocaleException
 {
     public function __construct(string $code)
     {
-        parent::__construct("Locale [$code] cannot be made default.");
+        parent::__construct("LocaleModel [$code] cannot be made default.");
     }
 }

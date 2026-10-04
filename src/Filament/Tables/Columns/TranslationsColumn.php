@@ -12,7 +12,7 @@ use Illuminate\Support\HtmlString;
 use Mcamara\LaravelLocalization\Exceptions\SupportedLocalesNotDefined;
 use Tipi\Localization\Contracts\TranslatableModel;
 use Tipi\Localization\LocaleResolver;
-use Tipi\Localization\Models\Locale;
+use Tipi\Localization\Models\LocaleModel;
 
 class TranslationsColumn extends Column
 {
@@ -53,7 +53,7 @@ class TranslationsColumn extends Column
     }
 
     /**
-     * @return Collection<string, Locale>
+     * @return Collection<string, LocaleModel>
      *
      * @throws SupportedLocalesNotDefined
      */
@@ -64,7 +64,7 @@ class TranslationsColumn extends Column
         return $localeResolver
             ->getSupportedLocales()
             ->reject(
-                fn (Locale $locale): bool => $locale->getKey() === $localeResolver->getDefaultId(),
+                fn (LocaleModel $locale): bool => $locale->getKey() === $localeResolver->getDefaultId(),
             );
     }
 

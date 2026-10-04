@@ -8,6 +8,6 @@ final class LocaleNotFound extends LocaleException
 {
     public function __construct(string $code)
     {
-        parent::__construct("Locale [$code] not found");
+        parent::__construct("LocaleModel [$code] not found");
     }
 }

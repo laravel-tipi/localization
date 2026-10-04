@@ -7,7 +7,7 @@ namespace Tipi\Localization\Actions;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 use Tipi\Localization\Exceptions\LocaleCannotBeActivated;
-use Tipi\Localization\Models\Locale;
+use Tipi\Localization\Models\LocaleModel;
 
 final readonly class ActivateLocale
 {
@@ -17,7 +17,7 @@ final readonly class ActivateLocale
     public function execute(string $localeCode): void
     {
         DB::transaction(function () use ($localeCode) {
-            $locale = Locale::query()
+            $locale = LocaleModel::query()
                 ->lockForUpdate()
                 ->findOrFail($localeCode);
 

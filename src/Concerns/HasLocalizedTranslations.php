@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
 use Tipi\Localization\Contracts\TranslationModel;
 use Tipi\Localization\LocaleResolver;
-use Tipi\Localization\Models\Locale;
+use Tipi\Localization\Models\LocaleModel;
 
 /**
  * @template TTranslation of Model&TranslationModel
@@ -154,7 +154,7 @@ trait HasLocalizedTranslations
     {
         $defaultCode = static::getLocaleResolver()->getDefaultCode();
 
-        return Locale::query()
+        return LocaleModel::query()
             ->where('code', '!=', $defaultCode)
             ->pluck('code')
             ->contains(

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Tipi\Localization\Contracts\TranslatableModel;
 use Tipi\Localization\LocaleResolver;
-use Tipi\Localization\Models\Locale;
+use Tipi\Localization\Models\LocaleModel;
 
 /**
  * @template TParent of Model&TranslatableModel
@@ -49,12 +49,12 @@ trait IsTranslation
     }
 
     /**
-     * @return BelongsTo<Locale, $this>
+     * @return BelongsTo<LocaleModel, $this>
      */
     public function locale(): BelongsTo
     {
         return $this->belongsTo(
-            Locale::class,
+            LocaleModel::class,
             'locale_code',
         );
     }

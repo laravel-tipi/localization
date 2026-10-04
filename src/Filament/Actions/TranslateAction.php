@@ -21,7 +21,7 @@ use LogicException;
 use Tipi\Localization\Actions\CreateTranslation;
 use Tipi\Localization\Contracts\TranslatableModel;
 use Tipi\Localization\Contracts\TranslationModel;
-use Tipi\Localization\Exceptions\TranslationAlreadyExistsException;
+use Tipi\Localization\Exceptions\TranslationAlreadyExistsExceptionException;
 use Tipi\Localization\LocaleResolver;
 use Tipi\Localization\Support\Filament\FilamentValidator;
 
@@ -275,7 +275,7 @@ class TranslateAction extends Action
                             attributes: $data['translation'],
                             localeCode: $localeCode,
                         );
-                    } catch (TranslationAlreadyExistsException $exception) {
+                    } catch (TranslationAlreadyExistsExceptionException $exception) {
                         FilamentValidator::fail(
                             field: 'locale_code',
                             message: $exception->getMessage(),

@@ -6,9 +6,9 @@ namespace Tipi\Localization;
 
 use Illuminate\Support\Collection;
 use Tipi\Localization\Contracts\LocaleRepository;
-use Tipi\Localization\Exceptions\DefaultLocaleNotDefined;
-use Tipi\Localization\Exceptions\LocaleNotFound;
-use Tipi\Localization\Exceptions\UnsupportedLocale;
+use Tipi\Localization\Exceptions\DefaultLocaleNotDefinedException;
+use Tipi\Localization\Exceptions\LocaleNotFoundException;
+use Tipi\Localization\Exceptions\UnsupportedLocaleException;
 
 final class LocaleRegistry
 {
@@ -34,7 +34,7 @@ final class LocaleRegistry
         $locale = $this->all()->get($code);
 
         if ($locale === null) {
-            throw new LocaleNotFound(code: $code);
+            throw new LocaleNotFoundException(code: $code);
         }
 
         return $locale;
@@ -61,7 +61,7 @@ final class LocaleRegistry
         $locale = $this->get($code);
 
         if (! $locale->isActive()) {
-            throw new UnsupportedLocale(code: $code);
+            throw new UnsupportedLocaleException(code: $code);
         }
 
         return $locale;
@@ -75,7 +75,7 @@ final class LocaleRegistry
             );
 
         if ($locale === null) {
-            throw new DefaultLocaleNotDefined;
+            throw new DefaultLocaleNotDefinedException;
         }
 
         return $locale;

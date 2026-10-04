@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tipi\Localization\Exceptions;
 
-final class SupportedLocalesNotDefined extends LocaleException
+final class SupportedLocalesNotDefinedException extends LocaleException
 {
     public function __construct()
     {

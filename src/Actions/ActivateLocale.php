@@ -6,7 +6,7 @@ namespace Tipi\Localization\Actions;
 
 use Illuminate\Support\Facades\DB;
 use Throwable;
-use Tipi\Localization\Exceptions\LocaleCannotBeActivated;
+use Tipi\Localization\Exceptions\LocaleCannotBeActivatedException;
 use Tipi\Localization\Models\LocaleModel;
 
 final readonly class ActivateLocale
@@ -22,7 +22,7 @@ final readonly class ActivateLocale
                 ->findOrFail($localeCode);
 
             if (! $locale->canBeActivated()) {
-                throw new LocaleCannotBeActivated($locale->getKey());
+                throw new LocaleCannotBeActivatedException($locale->getKey());
             }
 
             $locale->is_active = true;

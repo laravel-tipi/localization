@@ -6,7 +6,7 @@ namespace Tipi\Localization\Actions;
 
 use Illuminate\Support\Facades\DB;
 use Throwable;
-use Tipi\Localization\Exceptions\LocaleCannotBeDeactivated;
+use Tipi\Localization\Exceptions\LocaleCannotBeDeactivatedException;
 use Tipi\Localization\Models\LocaleModel;
 
 final readonly class DeactivateLocale
@@ -22,7 +22,7 @@ final readonly class DeactivateLocale
                 ->findOrFail($localeCode);
 
             if (! $locale->canBeDeactivated()) {
-                throw new LocaleCannotBeDeactivated($locale->getKey());
+                throw new LocaleCannotBeDeactivatedException($locale->getKey());
             }
 
             $locale->is_active = false;

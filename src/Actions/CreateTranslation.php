@@ -10,7 +10,7 @@ use LogicException;
 use Throwable;
 use Tipi\Localization\Contracts\TranslatableModel;
 use Tipi\Localization\Contracts\TranslationModel;
-use Tipi\Localization\Exceptions\TranslationAlreadyExistsException;
+use Tipi\Localization\Exceptions\TranslationAlreadyExistsExceptionException;
 use Tipi\Localization\LocaleResolver;
 
 final readonly class CreateTranslation
@@ -66,7 +66,7 @@ final readonly class CreateTranslation
             : $this->localeResolver->getSupportedLocale($localeCode);
 
         if ($parent->translationExistsForLocale($locale->getKey())) {
-            throw new TranslationAlreadyExistsException(
+            throw new TranslationAlreadyExistsExceptionException(
                 code: $locale->code,
             );
         }

@@ -7,8 +7,8 @@ namespace Tipi\Localization\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tipi\Localization\Exceptions\LocaleNotFound;
-use Tipi\Localization\Exceptions\UnsupportedLocale;
+use Tipi\Localization\Exceptions\LocaleNotFoundException;
+use Tipi\Localization\Exceptions\UnsupportedLocaleException;
 use Tipi\Localization\Locale;
 use Tipi\Localization\LocaleRegistry;
 
@@ -37,7 +37,7 @@ final readonly class SetLocale
 
         try {
             return $this->locales->supportedLocale($code);
-        } catch (LocaleNotFound|UnsupportedLocale) {
+        } catch (LocaleNotFoundException|UnsupportedLocaleException) {
             abort(404);
         }
     }

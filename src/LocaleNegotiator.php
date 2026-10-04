@@ -6,8 +6,8 @@ namespace Tipi\Localization;
 
 use Illuminate\Http\Request;
 use Tipi\Localization\Config\LocalizationConfig;
-use Tipi\Localization\Exceptions\LocaleNotFound;
-use Tipi\Localization\Exceptions\UnsupportedLocale;
+use Tipi\Localization\Exceptions\LocaleNotFoundException;
+use Tipi\Localization\Exceptions\UnsupportedLocaleException;
 
 final readonly class LocaleNegotiator
 {
@@ -45,7 +45,7 @@ final readonly class LocaleNegotiator
 
         try {
             return $this->locales->supportedLocale($code);
-        } catch (LocaleNotFound|UnsupportedLocale) {
+        } catch (LocaleNotFoundException|UnsupportedLocaleException) {
             return null;
         }
     }

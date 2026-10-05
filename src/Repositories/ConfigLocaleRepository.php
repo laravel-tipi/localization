@@ -8,7 +8,7 @@ use Illuminate\Support\Collection;
 use Tipi\Localization\Config\LocalizationConfig;
 use Tipi\Localization\Contracts\LocaleRepository;
 use Tipi\Localization\Enums\TextDirection;
-use Tipi\Localization\Exceptions\DefaultLocaleNotDefinedException;
+use Tipi\Localization\Exceptions\DefaultLocaleNotConfiguredException;
 use Tipi\Localization\Exceptions\InvalidLocaleConfigurationException;
 use Tipi\Localization\Exceptions\LocalesNotDefinedException;
 use Tipi\Localization\Locale;
@@ -30,20 +30,8 @@ final readonly class ConfigLocaleRepository implements LocaleRepository
         $locales = new Collection;
 
         foreach ($this->config->locales as $config) {
-            $locale = new Locale(
-                code: (string) $config['code'],
-                name: (string) $config['name'],
-                nativeName: (string) $config['native_name'],
-                countryCode: isset($config['country_code'])
-                    ? (string) $config['country_code']
-                    : null,
-                textDirection: TextDirection::from(
-                    $config['text_direction'] ?? TextDirection::Ltr->value,
-                ),
-                active: true,
-                default: $this->config->defaultLocale === $config['code'],
-            );
 
+            $locale = $this->makeLocale($config);
             $locales->put($locale->code, $locale);
         }
 
@@ -57,7 +45,7 @@ final readonly class ConfigLocaleRepository implements LocaleRepository
         }
 
         if ($this->config->defaultLocale === null) {
-            throw new DefaultLocaleNotDefinedException;
+            throw new DefaultLocaleNotConfiguredException;
         }
 
         $codes = [];
@@ -90,7 +78,7 @@ final readonly class ConfigLocaleRepository implements LocaleRepository
     }
 
     /**
-     * @param array<string, mixed> $locale
+     * @param  array<string, mixed>  $locale
      */
     private function validateLocale(array $locale, int $index): void
     {
@@ -105,11 +93,13 @@ final readonly class ConfigLocaleRepository implements LocaleRepository
                 );
             }
         }
+
         if (! LocaleCode::isValid($locale['code'])) {
             throw new InvalidLocaleConfigurationException(
                 "Locale code [{$locale['code']}] is invalid.",
             );
         }
+
         if (
             isset($locale['country_code'])
             && (
@@ -121,6 +111,7 @@ final readonly class ConfigLocaleRepository implements LocaleRepository
                 "Country code for locale [{$locale['code']}] must be a two-letter uppercase country code.",
             );
         }
+
         if (
             isset($locale['text_direction'])
             && (
@@ -135,7 +126,7 @@ final readonly class ConfigLocaleRepository implements LocaleRepository
     }
 
     /**
-     * @param array<string, mixed> $config
+     * @param  array<string, mixed>  $config
      */
     private function makeLocale(array $config): Locale
     {

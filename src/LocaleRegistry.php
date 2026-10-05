@@ -73,7 +73,7 @@ final class LocaleRegistry
             ->first(
                 fn (Locale $locale): bool => $locale->isDefault(),
             );
-
+        
         if ($locale === null) {
             throw new DefaultLocaleNotDefinedException;
         }

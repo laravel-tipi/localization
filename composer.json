@@ -1,6 +1,13 @@
 {
     "name": "laravel-tipi/localization",
     "description": "Localization and localized routing for Laravel.",
+    "keywords": [
+        "laravel",
+        "localization",
+        "locale",
+        "i18n",
+        "routing"
+    ],
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -26,15 +33,15 @@
     "autoload": {
         "psr-4": {
             "Tipi\\Localization\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Tipi\\Localization\\Tests\\": "tests/"
         },
         "files": [
             "src/helpers.php"
         ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tipi\\Localization\\Tests\\": "tests/"
+        }
     },
     "extra": {
         "laravel": {
@@ -43,10 +50,23 @@
             ]
         }
     },
+    "scripts": {
+        "test": "pest",
+        "format": "pint",
+        "format:test": "pint --test",
+        "check": [
+            "@format:test",
+            "@test"
+        ]
+    },
     "config": {
         "sort-packages": true,
         "allow-plugins": {
             "pestphp/pest-plugin": true
         }
+    },
+    "support": {
+        "issues": "https://github.com/laravel-tipi/localization/issues",
+        "source": "https://github.com/laravel-tipi/localization"
     }
 }

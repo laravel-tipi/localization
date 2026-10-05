@@ -32,4 +32,4 @@ jobs:
         run: composer format:test
 
       - name: Run tests
-        run: composer test
+        run: vendor/bin/pest

@@ -31,7 +31,10 @@
     "autoload-dev": {
         "psr-4": {
             "Tipi\\Localization\\Tests\\": "tests/"
-        }
+        },
+        "files": [
+            "src/helpers.php"
+        ]
     },
     "extra": {
         "laravel": {

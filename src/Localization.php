@@ -49,6 +49,23 @@ final readonly class Localization
         array $parameters = [],
         int $status = 302,
     ): RedirectResponse {
+        return redirect()->to(
+            $this->urls->route(
+                name: $name,
+                parameters: $parameters,
+            ),
+            status: $status,
+        );
+    }
+
+    /**
+     * @param  array<string, mixed>  $parameters
+     */
+    public function redirectToLocalizedRoute(
+        string $name,
+        array $parameters = [],
+        int $status = 302,
+    ): RedirectResponse {
         $locale = $this->negotiator->negotiate(
             request(),
         );

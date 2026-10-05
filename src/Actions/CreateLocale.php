@@ -24,6 +24,7 @@ final readonly class CreateLocale
         $locale = DB::transaction(function () use ($data): LocaleModel {
             $defaultLocaleExists = LocaleModel::query()
                 ->where('is_default', true)
+                ->lockForUpdate()
                 ->exists();
 
             $locale = new LocaleModel;

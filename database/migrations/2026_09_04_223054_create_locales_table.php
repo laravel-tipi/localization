@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Tipi\Localization\Database\LocaleTableConstraints;
 
 return new class extends Migration
 {
@@ -19,13 +20,9 @@ return new class extends Migration
             $table->string('text_direction', 3)->default('ltr');
             $table->boolean('is_active')->default(false)->index();
             $table->boolean('is_default')->default(false);
-
-            $table->unsignedTinyInteger('default_guard')
-                ->nullable()
-                ->storedAs('IF(is_default = 1, 1, NULL)');
-
-            $table->unique('default_guard');
         });
+
+        LocaleTableConstraints::create();
     }
 
     /**

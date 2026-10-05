@@ -24,7 +24,9 @@ final readonly class CreateLocaleData implements DataTransferObject
             name: $data['name'],
             nativeName: $data['native_name'],
             countryCode: $data['country_code'] ?? null,
-            textDirection: TextDirection::from($data['text_direction']) ?? TextDirection::Ltr,
+            textDirection: TextDirection::from(
+                $data['text_direction'] ?? TextDirection::Ltr->value,
+            ),
         );
     }
 

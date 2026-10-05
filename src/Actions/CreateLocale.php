@@ -22,9 +22,9 @@ final readonly class CreateLocale
     public function execute(CreateLocaleData $data): LocaleModel
     {
         $locale = DB::transaction(function () use ($data): LocaleModel {
-            $defaultLocale = LocaleModel::query()
-                ->where('default', true)
-                ->first();
+            $defaultLocaleExists = LocaleModel::query()
+                ->where('is_default', true)
+                ->exists();
 
             $locale = new LocaleModel;
 
@@ -34,10 +34,7 @@ final readonly class CreateLocale
             $locale->country_code = $data->countryCode;
             $locale->text_direction = $data->textDirection;
             $locale->is_active = true;
-
-            if ($defaultLocale === null) {
-                $locale->is_default = true;
-            }
+            $locale->is_default = ! $defaultLocaleExists;
 
             $locale->save();
 

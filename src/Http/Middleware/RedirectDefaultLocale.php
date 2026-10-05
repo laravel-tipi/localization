@@ -58,14 +58,14 @@ final readonly class RedirectDefaultLocale
         unset($parameters['locale']);
 
         $parameters = [
-            ...$parameters,
             ...$request->query(),
+            ...$parameters,
         ];
 
         return $this->urls->route(
             name: $name,
-            locale: $this->locales->defaultCode(),
             parameters: $parameters,
+            locale: $this->locales->defaultCode(),
         );
     }
 }

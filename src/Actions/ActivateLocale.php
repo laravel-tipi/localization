@@ -7,10 +7,15 @@ namespace Tipi\Localization\Actions;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 use Tipi\Localization\Exceptions\LocaleCannotBeActivatedException;
+use Tipi\Localization\LocaleRegistry;
 use Tipi\Localization\Models\LocaleModel;
 
 final readonly class ActivateLocale
 {
+    public function __construct(
+        private LocaleRegistry $locales,
+    ) {}
+
     /**
      * @throws Throwable
      */
@@ -28,5 +33,7 @@ final readonly class ActivateLocale
             $locale->is_active = true;
             $locale->save();
         });
+
+        $this->locales->flush();
     }
 }

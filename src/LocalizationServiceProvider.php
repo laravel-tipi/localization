@@ -72,13 +72,11 @@ final class LocalizationServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        $this->loadMigrationsFrom(
-            __DIR__.'/../database/migrations',
-        );
-        $this->loadViewsFrom(
-            __DIR__.'/../resources/views',
-            'tipi-localization',
-        );
+        if (resolve(LocalizationConfig::class)->localesDriver === LocaleDriver::Database) {
+            $this->loadMigrationsFrom(
+                __DIR__.'/../database/migrations',
+            );
+        }
 
         $this->publishes([
             __DIR__.'/../config/localization.php' => config_path('localization.php'),

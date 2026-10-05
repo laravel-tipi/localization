@@ -10,8 +10,7 @@
         }
     ],
     "require": {
-        "php": "^8.5",
-        "stijnvanouplines/blade-country-flags": "^1.0.9"
+        "php": "^8.5"
     },
     "autoload": {
         "psr-4": {

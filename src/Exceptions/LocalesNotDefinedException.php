@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tipi\Localization\Exceptions;
 
-final class DefaultLocaleNotDefinedException extends LocalizationConfigurationException
+final class LocalesNotDefinedException extends LocalizationConfigurationException
 {
     public function __construct()
     {
         parent::__construct(
-            'A default locale has not been defined.',
+            'No locales have been defined in the localization configuration.',
         );
     }
 }

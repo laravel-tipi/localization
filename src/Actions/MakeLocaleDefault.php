@@ -7,10 +7,15 @@ namespace Tipi\Localization\Actions;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 use Tipi\Localization\Exceptions\LocaleCannotBeMadeDefaultException;
+use Tipi\Localization\LocaleRegistry;
 use Tipi\Localization\Models\LocaleModel;
 
 final readonly class MakeLocaleDefault
 {
+    public function __construct(
+        private LocaleRegistry $locales,
+    ) {}
+
     /**
      * @throws Throwable
      */
@@ -32,5 +37,7 @@ final readonly class MakeLocaleDefault
             $locale->is_default = true;
             $locale->save();
         });
+
+        $this->locales->flush();
     }
 }

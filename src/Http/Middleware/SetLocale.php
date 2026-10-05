@@ -35,6 +35,10 @@ final readonly class SetLocale
             return $this->locales->default();
         }
 
+        if (! is_string($code)) {
+            abort(404);
+        }
+
         try {
             return $this->locales->supportedLocale($code);
         } catch (LocaleNotFoundException|UnsupportedLocaleException) {

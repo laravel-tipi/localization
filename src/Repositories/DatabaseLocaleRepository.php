@@ -20,7 +20,7 @@ final class DatabaseLocaleRepository implements LocaleRepository
             ->get()
             ->mapWithKeys(
                 fn (LocaleModel $locale): array => [
-                    $locale->getKey() => $locale->toLocale(),
+                    $locale->code => $locale->toLocale(),
                 ],
             );
     }

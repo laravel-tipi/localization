@@ -22,3 +22,14 @@ if (! function_exists('localized_route')) {
         );
     }
 }
+if (! function_exists('localized_url')) {
+    function localized_url(
+        string $locale,
+        bool $absolute = true,
+    ): string {
+        return Localization::localizedUrl(
+            locale: $locale,
+            absolute: $absolute,
+        );
+    }
+}

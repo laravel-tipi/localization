@@ -164,3 +164,27 @@ it('supports a custom redirect status', function () {
         ->and($response->getTargetUrl())
         ->toBe('http://localhost/ka/wines/10');
 });
+
+it('redirects to a localized route using the negotiated locale', function () {
+    request()->headers->set('Accept-Language', 'ka');
+
+    $response = resolve(Localization::class)->redirectToLocalizedRoute(
+        name: 'wines.show',
+        parameters: ['wine' => 10],
+    );
+
+    expect($response->getStatusCode())->toBe(302)
+        ->and($response->getTargetUrl())
+        ->toBe('http://localhost/ka/wines/10');
+});
+
+it('generates localized routes with the global helper', function () {
+    $url = localized_route(
+        name: 'wines.show',
+        parameters: ['wine' => 10],
+        locale: 'ka',
+        absolute: false,
+    );
+
+    expect($url)->toBe('/ka/wines/10');
+});

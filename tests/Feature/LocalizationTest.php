@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\DB;
+use Tipi\Localization\Facades\Localization;
 use Tipi\Localization\LocaleRegistry;
-use Tipi\Localization\Localization;
 use Tipi\Localization\Routing\LocalizedRouteRegistrar;
 
 beforeEach(function () {
@@ -53,7 +53,7 @@ beforeEach(function () {
 });
 
 it('returns the locale registry', function () {
-    $locales = resolve(Localization::class)->locales();
+    $locales = Localization::locales();
 
     expect($locales)
         ->toBeInstanceOf(LocaleRegistry::class)
@@ -66,7 +66,7 @@ it('returns the locale registry', function () {
 it('returns the current locale', function () {
     app()->setLocale('ka');
 
-    $locale = resolve(Localization::class)->current();
+    $locale = Localization::current();
 
     expect($locale->code)->toBe('ka');
 });
@@ -74,15 +74,14 @@ it('returns the current locale', function () {
 it('returns the current locale code', function () {
     app()->setLocale('ka');
 
-    expect(
-        resolve(Localization::class)->currentCode()
+    expect(Localization::currentCode()
     )->toBe('ka');
 });
 
 it('generates a route for the current locale', function () {
     app()->setLocale('ka');
 
-    $url = resolve(Localization::class)->route(
+    $url = Localization::route(
         name: 'wines.show',
         parameters: ['wine' => 10],
         absolute: false,
@@ -92,7 +91,7 @@ it('generates a route for the current locale', function () {
 });
 
 it('generates a route for an explicit locale', function () {
-    $url = resolve(Localization::class)->route(
+    $url = Localization::route(
         name: 'wines.show',
         parameters: ['wine' => 10],
         locale: 'ka',
@@ -103,7 +102,7 @@ it('generates a route for an explicit locale', function () {
 });
 
 it('hides the default locale when generating a route', function () {
-    $url = resolve(Localization::class)->route(
+    $url = Localization::route(
         name: 'wines.show',
         parameters: ['wine' => 10],
         locale: 'en',
@@ -114,7 +113,7 @@ it('hides the default locale when generating a route', function () {
 });
 
 it('does not expose internal route names to consumers', function () {
-    $url = resolve(Localization::class)->route(
+    $url = Localization::route(
         name: 'wines.show',
         parameters: ['wine' => 10],
         locale: 'ka',
@@ -125,10 +124,23 @@ it('does not expose internal route names to consumers', function () {
         ->not->toContain('__localized');
 });
 
+it('redirects to a route using the current locale', function () {
+    app()->setLocale('ka');
+
+    $response = Localization::redirectToRoute(
+        name: 'wines.show',
+        parameters: ['wine' => 10],
+    );
+
+    expect($response->getStatusCode())->toBe(302)
+        ->and($response->getTargetUrl())
+        ->toBe('http://localhost/ka/wines/10');
+});
+
 it('redirects to a route using the negotiated browser locale', function () {
     request()->headers->set('Accept-Language', 'ka');
 
-    $response = resolve(Localization::class)->redirectToRoute(
+    $response = Localization::redirectToLocalizedRoute(
         name: 'wines.show',
         parameters: ['wine' => 10],
     );
@@ -141,7 +153,7 @@ it('redirects to a route using the negotiated browser locale', function () {
 it('redirects to a route without a prefix when the negotiated locale is the default', function () {
     request()->headers->set('Accept-Language', 'en');
 
-    $response = resolve(Localization::class)->redirectToRoute(
+    $response = Localization::redirectToLocalizedRoute(
         name: 'wines.show',
         parameters: ['wine' => 10],
     );
@@ -152,9 +164,9 @@ it('redirects to a route without a prefix when the negotiated locale is the defa
 });
 
 it('supports a custom redirect status', function () {
-    request()->headers->set('Accept-Language', 'ka');
+    app()->setLocale('ka');
 
-    $response = resolve(Localization::class)->redirectToRoute(
+    $response = Localization::redirectToRoute(
         name: 'wines.show',
         parameters: ['wine' => 10],
         status: 301,
@@ -168,7 +180,7 @@ it('supports a custom redirect status', function () {
 it('redirects to a localized route using the negotiated locale', function () {
     request()->headers->set('Accept-Language', 'ka');
 
-    $response = resolve(Localization::class)->redirectToLocalizedRoute(
+    $response = Localization::redirectToLocalizedRoute(
         name: 'wines.show',
         parameters: ['wine' => 10],
     );

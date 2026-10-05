@@ -22,7 +22,7 @@ final class LocalizationServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             LocalizationConfig::class,
-            fn(): LocalizationConfig => new LocalizationConfig(
+            fn (): LocalizationConfig => new LocalizationConfig(
                 localesDriver: LocaleDriver::from(
                     config(
                         'localization.locales_driver',
@@ -56,8 +56,8 @@ final class LocalizationServiceProvider extends ServiceProvider
 
         $this->app->bind(
             LocaleRepository::class,
-            fn($app): LocaleRepository => match (
-            $app->make(LocalizationConfig::class)->localesDriver
+            fn ($app): LocaleRepository => match (
+                $app->make(LocalizationConfig::class)->localesDriver
             ) {
                 LocaleDriver::Database => $app->make(DatabaseLocaleRepository::class),
                 LocaleDriver::Config => $app->make(ConfigLocaleRepository::class),
@@ -73,6 +73,10 @@ final class LocalizationServiceProvider extends ServiceProvider
     public function boot(): void
     {
         if (resolve(LocalizationConfig::class)->localesDriver === LocaleDriver::Database) {
+            $this->loadMigrationsFrom(
+                __DIR__.'/../database/migrations',
+            );
+
             $this->publishesMigrations([
                 __DIR__.'/../database/migrations' => database_path('migrations'),
             ], 'localization-migrations');

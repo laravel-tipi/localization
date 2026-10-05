@@ -8,6 +8,8 @@ final class DefaultLocaleNotDefinedException extends LocaleException
 {
     public function __construct()
     {
-        parent::__construct('Default locale not defined');
+        parent::__construct(
+            'A default locale has not been defined.',
+        );
     }
 }

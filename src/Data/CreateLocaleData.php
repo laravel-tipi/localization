@@ -37,7 +37,7 @@ final readonly class CreateLocaleData implements DataTransferObject
             'name' => $this->name,
             'native_name' => $this->nativeName,
             'country_code' => $this->countryCode,
-            'text_direction' => $this->textDirection,
+            'text_direction' => $this->textDirection->value,
         ];
     }
 }

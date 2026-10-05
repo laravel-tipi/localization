@@ -14,8 +14,8 @@ final readonly class Locale
         public string $nativeName,
         public ?string $countryCode,
         public TextDirection $textDirection,
-        public bool $active,
-        public bool $default,
+        private bool $active,
+        private bool $default,
     ) {}
 
     public function isActive(): bool

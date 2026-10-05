@@ -25,7 +25,11 @@
     },
     "autoload": {
         "psr-4": {
-            "Tipi\\Localization\\": "src/",
+            "Tipi\\Localization\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
             "Tipi\\Localization\\Tests\\": "tests/"
         }
     },

@@ -5,10 +5,10 @@ declare(strict_types=1);
 use Tipi\Localization\Config\LocalizationConfig;
 use Tipi\Localization\Enums\LocaleDriver;
 use Tipi\Localization\Enums\TextDirection;
-use Tipi\Localization\Repositories\ConfigLocaleRepository;
 use Tipi\Localization\Exceptions\DefaultLocaleNotConfiguredException;
 use Tipi\Localization\Exceptions\InvalidLocaleConfigurationException;
 use Tipi\Localization\Exceptions\LocalesNotDefinedException;
+use Tipi\Localization\Repositories\ConfigLocaleRepository;
 
 it('returns configured locales', function () {
     $config = new LocalizationConfig(
@@ -51,12 +51,12 @@ it('returns configured locales', function () {
         ->nativeName->toBe('English')
         ->countryCode->toBe('GB')
         ->textDirection->toBe(TextDirection::Ltr)
-        ->active->toBeTrue()
-        ->default->toBeFalse();
+        ->isActive()->toBeTrue()
+        ->isDefault()->toBeFalse();
 
     expect($locales->get('ka'))
         ->code->toBe('ka')
-        ->default->toBeTrue();
+        ->isDefault()->toBeTrue();
 });
 
 it('uses default locale values for optional configuration', function () {
@@ -84,8 +84,8 @@ it('uses default locale values for optional configuration', function () {
     expect($locale)
         ->countryCode->toBeNull()
         ->textDirection->toBe(TextDirection::Ltr)
-        ->active->toBeTrue()
-        ->default->toBeTrue();
+        ->isActive()->toBeTrue()
+        ->isDefault()->toBeTrue();
 });
 
 it('throws when no locales are configured', function () {

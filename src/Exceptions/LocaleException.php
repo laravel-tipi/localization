@@ -6,7 +6,4 @@ namespace Tipi\Localization\Exceptions;
 
 use RuntimeException;
 
-abstract class LocaleException extends RuntimeException
-{
-
-}
+abstract class LocaleException extends RuntimeException {}

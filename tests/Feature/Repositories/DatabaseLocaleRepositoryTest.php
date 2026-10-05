@@ -38,7 +38,7 @@ it('returns locales keyed by their code', function () {
 });
 
 it('converts locale models to locale objects', function () {
-     DB::table('locales')->insert([
+    DB::table('locales')->insert([
         'code' => 'en',
         'name' => 'English',
         'native_name' => 'English',
@@ -58,12 +58,12 @@ it('converts locale models to locale objects', function () {
         ->nativeName->toBe('English')
         ->countryCode->toBe('GB')
         ->textDirection->toBe(TextDirection::Ltr)
-        ->active->toBeTrue()
-        ->default->toBeTrue();
+        ->isActive()->toBeTrue()
+        ->isDefault()->toBeTrue();
 });
 
 it('returns inactive locales as well', function () {
-     DB::table('locales')->insert([
+    DB::table('locales')->insert([
         'code' => 'en',
         'name' => 'English',
         'native_name' => 'English',
@@ -75,5 +75,5 @@ it('returns inactive locales as well', function () {
         ->all()
         ->get('en');
 
-    expect($locale->active)->toBeFalse();
+    expect($locale->isActive())->toBeFalse();
 });

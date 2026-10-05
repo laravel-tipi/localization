@@ -26,18 +26,18 @@ final class LocalizationServiceProvider extends ServiceProvider
                 localesDriver: LocaleDriver::from(
                     config(
                         'localization.locales_driver',
-                        'database'
+                        'config'
                     ),
                 ),
                 locales: (array) config('localization.locales', []),
-                defaultLocale: config('localization.default_locale'),
+                defaultLocale: config('localization.default_locale', 'ka'),
                 hideDefaultLocale: (bool) config(
                     'localization.hide_default_locale',
                     true
                 ),
                 negotiateRootLocale: (bool) config(
                     'localization.negotiate_root_locale',
-                    true,
+                    false,
                 ),
                 negotiatedRootRouteName: (string) config(
                     'localization.negotiated_root_route_name',

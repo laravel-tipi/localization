@@ -27,9 +27,9 @@ final readonly class LocalizedUrlGenerator
         ?string $locale = null,
         bool $absolute = true,
     ): string {
-         $locale = $locale === null
-             ? $this->resolver->current()
-             : $this->locales->supportedLocale($locale);
+        $locale = $locale === null
+            ? $this->resolver->current()
+            : $this->locales->supportedLocale($locale);
 
         if ($this->config->hideDefaultLocale && $locale->isDefault()) {
             return $this->url->route(

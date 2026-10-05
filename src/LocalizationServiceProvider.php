@@ -30,7 +30,7 @@ final class LocalizationServiceProvider extends ServiceProvider
                     ),
                 ),
                 locales: (array) config('localization.locales', []),
-                defaultLocale: config('localization.default_locale', 'ka'),
+                defaultLocale: config('localization.default_locale'),
                 hideDefaultLocale: (bool) config(
                     'localization.hide_default_locale',
                     true

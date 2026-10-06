@@ -4,6 +4,6 @@ declare(strict_types=1);
 
 namespace Tipi\Localization\Exceptions;
 
-use RuntimeException;
+use LogicException;
 
-abstract class LocalizationConfigurationException extends RuntimeException {}
+abstract class LocalizationConfigurationException extends LogicException {}

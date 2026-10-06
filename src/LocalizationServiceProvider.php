@@ -23,34 +23,14 @@ final class LocalizationServiceProvider extends ServiceProvider
         $this->app->singleton(
             LocalizationConfig::class,
             fn (): LocalizationConfig => new LocalizationConfig(
-                localesDriver: LocaleDriver::from(
-                    config(
-                        'localization.locales_driver',
-                        'config'
-                    ),
-                ),
+                localesDriver: LocaleDriver::from(config('localization.locales_driver')),
                 locales: (array) config('localization.locales', []),
                 defaultLocale: config('localization.default_locale'),
-                hideDefaultLocale: (bool) config(
-                    'localization.hide_default_locale',
-                    true
-                ),
-                negotiateRootLocale: (bool) config(
-                    'localization.negotiate_root_locale',
-                    false,
-                ),
-                negotiatedRootRouteName: (string) config(
-                    'localization.negotiated_root_route_name',
-                    'home',
-                ),
-                localeCookie: (string) config(
-                    'localization.cookie.name',
-                    'locale',
-                ),
-                localeCookieMinutes: (int) config(
-                    'localization.cookie.minutes',
-                    60 * 24 * 365,
-                ),
+                hideDefaultLocale: (bool) config('localization.hide_default_locale'),
+                negotiateRootLocale: (bool) config('localization.negotiate_root_locale'),
+                negotiatedRootRouteName: (string) config('localization.negotiated_root_route_name'),
+                localeCookie: (string) config('localization.cookie.name'),
+                localeCookieMinutes: (int) config('localization.cookie.minutes'),
             ),
         );
 

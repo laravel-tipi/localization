@@ -36,6 +36,7 @@ it('returns configured locales', function () {
         negotiatedRootRouteName: 'home',
         localeCookie: 'locale',
         localeCookieMinutes: 525600,
+        localeSession: 'locale',
         localePolicy: LocalePolicy::class,
         localeModel: Locale::class,
     );
@@ -78,6 +79,7 @@ it('uses default locale values for optional configuration', function () {
         negotiatedRootRouteName: 'home',
         localeCookie: 'locale',
         localeCookieMinutes: 525600,
+        localeSession: 'locale',
         localePolicy: LocalePolicy::class,
         localeModel: Locale::class,
     );
@@ -103,6 +105,7 @@ it('throws when no locales are configured', function () {
         negotiatedRootRouteName: 'home',
         localeCookie: 'locale',
         localeCookieMinutes: 525600,
+        localeSession: 'locale',
         localePolicy: LocalePolicy::class,
         localeModel: Locale::class,
     );
@@ -126,6 +129,7 @@ it('throws when no default locale is configured', function () {
         negotiatedRootRouteName: 'home',
         localeCookie: 'locale',
         localeCookieMinutes: 525600,
+        localeSession: 'locale',
         localePolicy: LocalePolicy::class,
         localeModel: Locale::class,
     );
@@ -143,6 +147,7 @@ it('rejects invalid locale configuration', function (array $locale) {
         negotiatedRootRouteName: 'home',
         localeCookie: 'locale',
         localeCookieMinutes: 525600,
+        localeSession: 'locale',
         localePolicy: LocalePolicy::class,
         localeModel: Locale::class,
     );
@@ -206,6 +211,7 @@ it('rejects duplicate locale codes', function () {
         negotiatedRootRouteName: 'home',
         localeCookie: 'locale',
         localeCookieMinutes: 525600,
+        localeSession: 'locale',
         localePolicy: LocalePolicy::class,
         localeModel: Locale::class,
     );
@@ -229,6 +235,7 @@ it('rejects a default locale that is not defined', function () {
         negotiatedRootRouteName: 'home',
         localeCookie: 'locale',
         localeCookieMinutes: 525600,
+        localeSession: 'locale',
         localePolicy: LocalePolicy::class,
         localeModel: Locale::class,
     );

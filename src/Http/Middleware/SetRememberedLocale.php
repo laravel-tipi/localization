@@ -33,15 +33,17 @@ final readonly class SetRememberedLocale
 
     private function resolve(Request $request): Locale
     {
-        $code = $request->session()->get(
-            $this->config->localeSession,
-        );
+        if ($request->hasSession()) {
+            $code = $request->session()->get(
+                $this->config->localeSession,
+            );
 
-        if (is_string($code)) {
-            try {
-                return $this->locales->supportedLocale($code);
-            } catch (LocaleNotFoundException|UnsupportedLocaleException) {
-                //
+            if (is_string($code)) {
+                try {
+                    return $this->locales->supportedLocale($code);
+                } catch (LocaleNotFoundException|UnsupportedLocaleException) {
+                    //
+                }
             }
         }
 

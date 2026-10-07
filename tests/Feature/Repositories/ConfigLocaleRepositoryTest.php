@@ -10,8 +10,6 @@ use Tipi\Localization\Exceptions\LocalesNotDefinedException;
 use Tipi\Localization\Repositories\ConfigLocaleRepository;
 use Tipi\Support\Enums\TextDirection;
 
-;
-
 it('returns configured locales', function () {
     $config = new LocalizationConfig(
         localesDriver: LocaleDriver::Config,

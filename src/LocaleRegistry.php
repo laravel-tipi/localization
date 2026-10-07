@@ -11,7 +11,6 @@ use Tipi\Localization\Exceptions\LocaleNotFoundException;
 use Tipi\Localization\Exceptions\UnsupportedLocaleException;
 use Tipi\Support\Locale;
 
-
 final class LocaleRegistry
 {
     /**

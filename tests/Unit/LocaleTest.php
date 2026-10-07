@@ -5,8 +5,6 @@ declare(strict_types=1);
 use Tipi\Support\Enums\TextDirection;
 use Tipi\Support\Locale;
 
-;
-
 it('exposes locale data', function () {
     $locale = new Locale(
         code: 'en',

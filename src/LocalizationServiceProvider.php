@@ -11,7 +11,6 @@ use Tipi\Localization\Enums\LocaleDriver;
 use Tipi\Localization\Repositories\ConfigLocaleRepository;
 use Tipi\Localization\Repositories\DatabaseLocaleRepository;
 
-
 final class LocalizationServiceProvider extends ServiceProvider
 {
     public function register(): void

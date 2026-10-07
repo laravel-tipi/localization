@@ -21,6 +21,7 @@ final class LocalizationServiceProvider extends ServiceProvider
             'localization',
         );
 
+        $this->app->singleton(LocaleModelResolver::class);
         $this->app->singleton(
             LocalizationConfig::class,
             fn (): LocalizationConfig => new LocalizationConfig(

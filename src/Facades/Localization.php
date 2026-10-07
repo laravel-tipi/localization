@@ -12,6 +12,7 @@ use Tipi\Support\Locale;
 
 /**
  * @method static Locale setCurrentLocale(string|Locale $locale)
+ * @method static Locale selectLocale(string|Locale $locale)
  * @method static void routes(Closure $routes)
  * @method static string route(string $name, array $parameters = [], ?string $locale = null, bool $absolute = true)
  * @method static RedirectResponse redirectToRoute(string $name, array $parameters = [], int $status = 302)

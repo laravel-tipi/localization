@@ -6,6 +6,7 @@ namespace Tipi\Localization;
 
 use Closure;
 use Illuminate\Http\RedirectResponse;
+use Tipi\Localization\Actions\RememberCurrentLocale;
 use Tipi\Localization\Actions\SetCurrentLocale;
 use Tipi\Localization\Routing\LocalizedRouteRegistrar;
 use Tipi\Localization\Routing\LocalizedUrlGenerator;
@@ -20,6 +21,7 @@ final readonly class Localization
         private LocaleRegistry $locales,
         private LocaleNegotiator $negotiator,
         private SetCurrentLocale $setCurrentLocale,
+        private RememberCurrentLocale $rememberCurrentLocale,
     ) {}
 
     public function routes(Closure $routes): void
@@ -101,5 +103,14 @@ final readonly class Localization
     public function setCurrentLocale(string|Locale $locale): Locale
     {
         return $this->setCurrentLocale->execute($locale);
+    }
+
+    public function selectLocale(string|Locale $locale): Locale
+    {
+        $locale = $this->setCurrentLocale->execute($locale);
+
+        $this->rememberCurrentLocale->execute(request());
+
+        return $locale;
     }
 }

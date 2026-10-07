@@ -7,13 +7,14 @@ namespace Tipi\Localization\Actions;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 use Tipi\Localization\Exceptions\LocaleCannotBeMadeDefaultException;
+use Tipi\Localization\LocaleModelResolver;
 use Tipi\Localization\LocaleRegistry;
-use Tipi\Localization\Models\Locale;
 
 final readonly class MakeLocaleDefault
 {
     public function __construct(
         private LocaleRegistry $locales,
+        private LocaleModelResolver $modelResolver,
     ) {}
 
     /**
@@ -22,7 +23,9 @@ final readonly class MakeLocaleDefault
     public function execute(string $code): void
     {
         DB::transaction(function () use ($code) {
-            $locale = Locale::query()
+            $model = $this->modelResolver->class();
+
+            $locale = $model::query()
                 ->lockForUpdate()
                 ->findOrFail($code);
 
@@ -30,7 +33,7 @@ final readonly class MakeLocaleDefault
                 throw new LocaleCannotBeMadeDefaultException($locale->getKey());
             }
 
-            Locale::query()
+            $model::query()
                 ->whereKeyNot($locale->getKey())
                 ->update(['is_default' => false]);
 

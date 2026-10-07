@@ -1,6 +1,8 @@
 <?php
 
 declare(strict_types=1);
+use Tipi\Localization\Models\Locale;
+use Tipi\Localization\Policies\LocalePolicy;
 
 return [
     /*
@@ -119,4 +121,8 @@ return [
         'name' => 'locale',
         'minutes' => 60 * 24 * 365,
     ],
+
+    'locale_policy' => LocalePolicy::class,
+
+    'locale_model' => Locale::class,
 ];

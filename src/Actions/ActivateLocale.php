@@ -7,13 +7,14 @@ namespace Tipi\Localization\Actions;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 use Tipi\Localization\Exceptions\LocaleCannotBeActivatedException;
+use Tipi\Localization\LocaleModelResolver;
 use Tipi\Localization\LocaleRegistry;
-use Tipi\Localization\Models\Locale;
 
 final readonly class ActivateLocale
 {
     public function __construct(
         private LocaleRegistry $locales,
+        private LocaleModelResolver $modelResolver,
     ) {}
 
     /**
@@ -22,7 +23,9 @@ final readonly class ActivateLocale
     public function execute(string $code): void
     {
         DB::transaction(function () use ($code) {
-            $locale = Locale::query()
+            $model = $this->modelResolver->class();
+
+            $locale = $model::query()
                 ->lockForUpdate()
                 ->findOrFail($code);
 

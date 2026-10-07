@@ -6,21 +6,28 @@ namespace Tipi\Localization\Repositories;
 
 use Illuminate\Support\Collection;
 use Tipi\Localization\Contracts\LocaleRepository;
+use Tipi\Localization\LocaleModelResolver;
 use Tipi\Localization\Models\Locale;
 use Tipi\Support\Locale as LocaleData;
 
-final class DatabaseLocaleRepository implements LocaleRepository
+final readonly class DatabaseLocaleRepository implements LocaleRepository
 {
+    public function __construct(
+        private LocaleModelResolver $modelResolver,
+    ) {}
+
     /**
      * @return Collection<string, LocaleData>
      */
     public function all(): Collection
     {
-        return Locale::query()
+        $model = $this->modelResolver->class();
+
+        return $model::query()
             ->get()
             ->mapWithKeys(
                 fn (Locale $locale): array => [
-                    $locale->code => $locale->toLocale(),
+                    $locale->getLocaleCode() => $locale->toLocale(),
                 ],
             );
     }

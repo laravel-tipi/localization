@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tipi\Localization;
 
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Tipi\Localization\Config\LocalizationConfig;
 use Tipi\Localization\Contracts\LocaleRepository;
@@ -31,6 +32,8 @@ final class LocalizationServiceProvider extends ServiceProvider
                 negotiatedRootRouteName: (string) config('localization.negotiated_root_route_name'),
                 localeCookie: (string) config('localization.cookie.name'),
                 localeCookieMinutes: (int) config('localization.cookie.minutes'),
+                localePolicy: (string) config('localization.locale_policy'),
+                localeModel: (string) config('localization.locale_model'),
             ),
         );
 
@@ -50,8 +53,13 @@ final class LocalizationServiceProvider extends ServiceProvider
         $this->app->scoped(Localization::class);
     }
 
-    public function boot(): void
+    public function boot(LocalizationConfig $config): void
     {
+        Gate::policy(
+            $config->localeModel,
+            $config->localePolicy,
+        );
+
         if (resolve(LocalizationConfig::class)->localesDriver === LocaleDriver::Database) {
             $this->loadMigrationsFrom(
                 __DIR__.'/../database/migrations',

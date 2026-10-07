@@ -46,6 +46,11 @@ class Locale extends Model
         );
     }
 
+    public function getLocaleCode(): string
+    {
+        return $this->getKey();
+    }
+
     public function isActive(): bool
     {
         return $this->is_active;
@@ -74,5 +79,11 @@ class Locale extends Model
     public function canBeDeactivated(): bool
     {
         return $this->isActive() && ! $this->isDefault();
+    }
+
+    public function canBeDeleted(): bool
+    {
+        return $this->isInactive()
+        && ! $this->isDefault();
     }
 }

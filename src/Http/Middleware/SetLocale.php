@@ -9,8 +9,8 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tipi\Localization\Exceptions\LocaleNotFoundException;
 use Tipi\Localization\Exceptions\UnsupportedLocaleException;
-use Tipi\Localization\Locale;
 use Tipi\Localization\LocaleRegistry;
+use Tipi\Support\Locale;
 
 final readonly class SetLocale
 {

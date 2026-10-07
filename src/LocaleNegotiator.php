@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Tipi\Localization\Config\LocalizationConfig;
 use Tipi\Localization\Exceptions\LocaleNotFoundException;
 use Tipi\Localization\Exceptions\UnsupportedLocaleException;
+use Tipi\Support\Locale;
 
 final readonly class LocaleNegotiator
 {

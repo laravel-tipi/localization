@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tipi\Localization\Data;
 
-use Tipi\Localization\Enums\TextDirection;
-use Tipi\Localization\Support\Data\DataTransferObject;
+use Tipi\Support\Data\DataTransferObject;
+use Tipi\Support\Enums\TextDirection;
 
 final readonly class CreateLocaleData implements DataTransferObject
 {

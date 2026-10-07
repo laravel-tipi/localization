@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tipi\Localization;
 
-use Tipi\Localization\Enums\TextDirection;
+use Tipi\Support\Enums\TextDirection;
 
 final readonly class Locale
 {

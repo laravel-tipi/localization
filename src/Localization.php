@@ -8,6 +8,8 @@ use Closure;
 use Illuminate\Http\RedirectResponse;
 use Tipi\Localization\Routing\LocalizedRouteRegistrar;
 use Tipi\Localization\Routing\LocalizedUrlGenerator;
+use Tipi\Support\Locale;
+
 
 final readonly class Localization
 {

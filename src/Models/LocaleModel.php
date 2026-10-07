@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Tipi\Localization\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Tipi\Localization\Enums\TextDirection;
-use Tipi\Localization\Locale;
+use Tipi\Support\Enums\TextDirection;
+use Tipi\Support\Locale;
 
 class LocaleModel extends Model
 {

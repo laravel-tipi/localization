@@ -7,12 +7,12 @@ namespace Tipi\Localization\Repositories;
 use Illuminate\Support\Collection;
 use Tipi\Localization\Config\LocalizationConfig;
 use Tipi\Localization\Contracts\LocaleRepository;
-use Tipi\Localization\Enums\TextDirection;
 use Tipi\Localization\Exceptions\DefaultLocaleNotConfiguredException;
 use Tipi\Localization\Exceptions\InvalidLocaleConfigurationException;
 use Tipi\Localization\Exceptions\LocalesNotDefinedException;
-use Tipi\Localization\Locale;
 use Tipi\Localization\Support\LocaleCode;
+use Tipi\Support\Enums\TextDirection;
+use Tipi\Support\Locale;
 
 final readonly class ConfigLocaleRepository implements LocaleRepository
 {

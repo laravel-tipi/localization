@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use Tipi\Localization\Enums\TextDirection;
 use Tipi\Localization\Repositories\DatabaseLocaleRepository;
+use Tipi\Support\Enums\TextDirection;
 
 beforeEach(function () {
     $this->artisan('migrate')->run();

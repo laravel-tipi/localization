@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tipi\Localization;
 
+use Tipi\Support\Locale;
+
 final class LocaleResolver
 {
     private ?Locale $locale = null;

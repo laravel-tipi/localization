@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 use Tipi\Localization\Actions\CreateLocale;
 use Tipi\Localization\Data\CreateLocaleData;
-use Tipi\Localization\Enums\TextDirection;
 use Tipi\Localization\LocaleRegistry;
 use Tipi\Localization\Models\LocaleModel;
+use Tipi\Support\Enums\TextDirection;
 
 beforeEach(function () {
     $this->artisan('migrate')->run();

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Tipi\Localization\Data\UpdateLocaleData;
-use Tipi\Localization\Enums\TextDirection;
+use Tipi\Support\Enums\TextDirection;
 
 it('creates data from an array', function () {
     $data = UpdateLocaleData::fromArray([

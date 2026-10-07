@@ -277,7 +277,7 @@ Create a locale:
 ```php
 use Tipi\Localization\Actions\CreateLocale;
 use Tipi\Localization\Data\CreateLocaleData;
-use Tipi\Localization\Enums\TextDirection;
+use Tipi\Support\Enums\TextDirection;
 
 $locale = app(CreateLocale::class)->execute(
     new CreateLocaleData(

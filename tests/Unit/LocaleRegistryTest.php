@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 use Illuminate\Support\Collection;
 use Tipi\Localization\Contracts\LocaleRepository;
-use Tipi\Localization\Enums\TextDirection;
 use Tipi\Localization\Exceptions\DefaultLocaleNotDefinedException;
 use Tipi\Localization\Exceptions\LocaleNotFoundException;
 use Tipi\Localization\Exceptions\UnsupportedLocaleException;
-use Tipi\Localization\Locale;
 use Tipi\Localization\LocaleRegistry;
+use Tipi\Support\Enums\TextDirection;
+use Tipi\Support\Locale;
 
 function makeLocale(
     string $code,

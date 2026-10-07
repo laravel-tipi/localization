@@ -7,8 +7,8 @@ namespace Tipi\Localization\Facades;
 use Closure;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Facade;
-use Tipi\Localization\Locale;
 use Tipi\Localization\LocaleRegistry;
+use Tipi\Support\Locale;
 
 /**
  * @method static void routes(Closure $routes)

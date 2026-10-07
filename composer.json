@@ -18,6 +18,7 @@
     ],
     "require": {
         "php": "^8.5",
+        "laravel-tipi/support": "^1.0",
         "illuminate/contracts": "^13.0",
         "illuminate/database": "^13.0",
         "illuminate/http": "^13.0",

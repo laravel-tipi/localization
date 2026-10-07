@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Tipi\Localization\Actions\UpdateLocale;
 use Tipi\Localization\Data\UpdateLocaleData;
-use Tipi\Localization\Enums\TextDirection;
 use Tipi\Localization\LocaleRegistry;
 use Tipi\Localization\Models\LocaleModel;
+use Tipi\Support\Enums\TextDirection;
 
 beforeEach(function () {
     $this->artisan('migrate')->run();

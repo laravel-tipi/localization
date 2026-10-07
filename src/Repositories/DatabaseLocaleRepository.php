@@ -6,8 +6,8 @@ namespace Tipi\Localization\Repositories;
 
 use Illuminate\Support\Collection;
 use Tipi\Localization\Contracts\LocaleRepository;
-use Tipi\Localization\Locale;
 use Tipi\Localization\Models\LocaleModel;
+use Tipi\Support\Locale;
 
 final class DatabaseLocaleRepository implements LocaleRepository
 {

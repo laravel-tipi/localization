@@ -7,6 +7,7 @@ use Tipi\Localization\Enums\LocaleDriver;
 use Tipi\Localization\Exceptions\DefaultLocaleNotConfiguredException;
 use Tipi\Localization\Exceptions\InvalidLocaleConfigurationException;
 use Tipi\Localization\Exceptions\LocalesNotDefinedException;
+use Tipi\Localization\Policies\LocalePolicy;
 use Tipi\Localization\Repositories\ConfigLocaleRepository;
 use Tipi\Support\Enums\TextDirection;
 
@@ -35,6 +36,8 @@ it('returns configured locales', function () {
         negotiatedRootRouteName: 'home',
         localeCookie: 'locale',
         localeCookieMinutes: 525600,
+        localePolicy: LocalePolicy::class,
+        localeModel: Locale::class,
     );
 
     $repository = new ConfigLocaleRepository($config);
@@ -75,6 +78,8 @@ it('uses default locale values for optional configuration', function () {
         negotiatedRootRouteName: 'home',
         localeCookie: 'locale',
         localeCookieMinutes: 525600,
+        localePolicy: LocalePolicy::class,
+        localeModel: Locale::class,
     );
 
     $locale = (new ConfigLocaleRepository($config))
@@ -98,6 +103,8 @@ it('throws when no locales are configured', function () {
         negotiatedRootRouteName: 'home',
         localeCookie: 'locale',
         localeCookieMinutes: 525600,
+        localePolicy: LocalePolicy::class,
+        localeModel: Locale::class,
     );
 
     (new ConfigLocaleRepository($config))->all();
@@ -119,6 +126,8 @@ it('throws when no default locale is configured', function () {
         negotiatedRootRouteName: 'home',
         localeCookie: 'locale',
         localeCookieMinutes: 525600,
+        localePolicy: LocalePolicy::class,
+        localeModel: Locale::class,
     );
 
     (new ConfigLocaleRepository($config))->all();
@@ -134,6 +143,8 @@ it('rejects invalid locale configuration', function (array $locale) {
         negotiatedRootRouteName: 'home',
         localeCookie: 'locale',
         localeCookieMinutes: 525600,
+        localePolicy: LocalePolicy::class,
+        localeModel: Locale::class,
     );
 
     (new ConfigLocaleRepository($config))->all();
@@ -195,6 +206,8 @@ it('rejects duplicate locale codes', function () {
         negotiatedRootRouteName: 'home',
         localeCookie: 'locale',
         localeCookieMinutes: 525600,
+        localePolicy: LocalePolicy::class,
+        localeModel: Locale::class,
     );
 
     (new ConfigLocaleRepository($config))->all();
@@ -216,6 +229,8 @@ it('rejects a default locale that is not defined', function () {
         negotiatedRootRouteName: 'home',
         localeCookie: 'locale',
         localeCookieMinutes: 525600,
+        localePolicy: LocalePolicy::class,
+        localeModel: Locale::class,
     );
 
     (new ConfigLocaleRepository($config))->all();

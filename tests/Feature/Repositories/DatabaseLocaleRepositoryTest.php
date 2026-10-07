@@ -30,7 +30,7 @@ it('returns locales keyed by their code', function () {
         'is_default' => false,
     ]);
 
-    $locales = (new DatabaseLocaleRepository)->all();
+    $locales = app(DatabaseLocaleRepository::class)->all();
 
     expect($locales)
         ->toHaveCount(2)
@@ -48,7 +48,7 @@ it('converts locale models to locale objects', function () {
         'is_default' => true,
     ]);
 
-    $locale = (new DatabaseLocaleRepository)
+    $locale = app(DatabaseLocaleRepository::class)
         ->all()
         ->get('en');
 
@@ -71,7 +71,7 @@ it('returns inactive locales as well', function () {
         'is_default' => false,
     ]);
 
-    $locale = (new DatabaseLocaleRepository)
+    $locale = app(DatabaseLocaleRepository::class)
         ->all()
         ->get('en');
 

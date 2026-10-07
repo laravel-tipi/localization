@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Throwable;
 use Tipi\Localization\Exceptions\LocaleCannotBeDeactivatedException;
 use Tipi\Localization\LocaleRegistry;
-use Tipi\Localization\Models\LocaleModel;
+use Tipi\Localization\Models\Locale;
 
 final readonly class DeactivateLocale
 {
@@ -22,7 +22,7 @@ final readonly class DeactivateLocale
     public function execute(string $localeCode): void
     {
         DB::transaction(function () use ($localeCode) {
-            $locale = LocaleModel::query()
+            $locale = Locale::query()
                 ->lockForUpdate()
                 ->findOrFail($localeCode);
 

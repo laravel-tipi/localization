@@ -6,9 +6,9 @@ namespace Tipi\Localization\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Tipi\Support\Enums\TextDirection;
-use Tipi\Support\Locale;
+use Tipi\Support\Locale as LocaleData;
 
-class LocaleModel extends Model
+class Locale extends Model
 {
     protected $primaryKey = 'code';
 
@@ -33,9 +33,9 @@ class LocaleModel extends Model
     }
 
     // helpers
-    public function toLocale(): Locale
+    public function toLocale(): LocaleData
     {
-        return new Locale(
+        return new LocaleData(
             code: $this->code,
             name: $this->name,
             nativeName: $this->native_name,

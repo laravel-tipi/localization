@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Throwable;
 use Tipi\Localization\Data\UpdateLocaleData;
 use Tipi\Localization\LocaleRegistry;
-use Tipi\Localization\Models\LocaleModel;
+use Tipi\Localization\Models\Locale;
 
 final readonly class UpdateLocale
 {
@@ -19,10 +19,10 @@ final readonly class UpdateLocale
     /**
      * @throws Throwable
      */
-    public function execute(string $code, UpdateLocaleData $data): LocaleModel
+    public function execute(string $code, UpdateLocaleData $data): Locale
     {
-        $locale = DB::transaction(function () use ($code, $data): LocaleModel {
-            $locale = LocaleModel::query()
+        $locale = DB::transaction(function () use ($code, $data): Locale {
+            $locale = Locale::query()
                 ->lockForUpdate()
                 ->findOrFail($code);
 

@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Tipi\Localization\Actions\UpdateLocale;
 use Tipi\Localization\Data\UpdateLocaleData;
 use Tipi\Localization\LocaleRegistry;
-use Tipi\Localization\Models\LocaleModel;
+use Tipi\Localization\Models\Locale;
 use Tipi\Support\Enums\TextDirection;
 
 beforeEach(function () {
@@ -36,7 +36,7 @@ it('updates a locale', function () {
     );
 
     expect($locale)
-        ->toBeInstanceOf(LocaleModel::class)
+        ->toBeInstanceOf(Locale::class)
         ->code->toBe('en')
         ->name->toBe('Updated English')
         ->native_name->toBe('Updated Native Name')
@@ -63,7 +63,7 @@ it('does not change the locale code', function () {
         ),
     );
 
-    expect(LocaleModel::query()->find('en'))->not->toBeNull();
+    expect(Locale::query()->find('en'))->not->toBeNull();
 
     $this->assertDatabaseCount('locales', 1);
 });
@@ -79,7 +79,7 @@ it('does not change active or default state', function () {
         ),
     );
 
-    $locale = LocaleModel::query()->findOrFail('en');
+    $locale = Locale::query()->findOrFail('en');
 
     expect($locale)
         ->is_active->toBeTrue()
@@ -98,7 +98,7 @@ it('allows the country code to be removed', function () {
     );
 
     expect(
-        LocaleModel::query()->findOrFail('en')->country_code
+        Locale::query()->findOrFail('en')->country_code
     )->toBeNull();
 });
 

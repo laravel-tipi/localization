@@ -5,7 +5,7 @@ declare(strict_types=1);
 use Tipi\Localization\Actions\CreateLocale;
 use Tipi\Localization\Data\CreateLocaleData;
 use Tipi\Localization\LocaleRegistry;
-use Tipi\Localization\Models\LocaleModel;
+use Tipi\Localization\Models\Locale;
 use Tipi\Support\Enums\TextDirection;
 
 beforeEach(function () {
@@ -34,7 +34,7 @@ it('creates a locale', function () {
     );
 
     expect($locale)
-        ->toBeInstanceOf(LocaleModel::class)
+        ->toBeInstanceOf(Locale::class)
         ->code->toBe('en')
         ->name->toBe('English')
         ->native_name->toBe('English')
@@ -59,7 +59,7 @@ it('makes the first locale default', function () {
         createLocaleData(),
     );
 
-    $locale = LocaleModel::query()->findOrFail('en');
+    $locale = Locale::query()->findOrFail('en');
 
     expect($locale)
         ->is_active->toBeTrue()
@@ -82,10 +82,10 @@ it('does not make subsequent locales default', function () {
         ),
     );
 
-    expect(LocaleModel::query()->findOrFail('en')->is_default)
+    expect(Locale::query()->findOrFail('en')->is_default)
         ->toBeTrue();
 
-    expect(LocaleModel::query()->findOrFail('ka')->is_default)
+    expect(Locale::query()->findOrFail('ka')->is_default)
         ->toBeFalse();
 });
 

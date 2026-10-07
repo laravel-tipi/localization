@@ -19,12 +19,12 @@ final readonly class DeactivateLocale
     /**
      * @throws Throwable
      */
-    public function execute(string $localeCode): void
+    public function execute(string $code): void
     {
-        DB::transaction(function () use ($localeCode) {
+        DB::transaction(function () use ($code) {
             $locale = Locale::query()
                 ->lockForUpdate()
-                ->findOrFail($localeCode);
+                ->findOrFail($code);
 
             if (! $locale->canBeDeactivated()) {
                 throw new LocaleCannotBeDeactivatedException($locale->getKey());

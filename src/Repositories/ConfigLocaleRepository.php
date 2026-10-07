@@ -10,6 +10,7 @@ use Tipi\Localization\Contracts\LocaleRepository;
 use Tipi\Localization\Exceptions\DefaultLocaleNotConfiguredException;
 use Tipi\Localization\Exceptions\InvalidLocaleConfigurationException;
 use Tipi\Localization\Exceptions\LocalesNotDefinedException;
+use Tipi\Localization\Support\CountryCode;
 use Tipi\Localization\Support\LocaleCode;
 use Tipi\Support\Enums\TextDirection;
 use Tipi\Support\Locale;
@@ -104,7 +105,7 @@ final readonly class ConfigLocaleRepository implements LocaleRepository
             isset($locale['country_code'])
             && (
                 ! is_string($locale['country_code'])
-                || preg_match('/^[A-Z]{2}$/D', $locale['country_code']) !== 1
+                || ! CountryCode::isValid($locale['country_code'])
             )
         ) {
             throw new InvalidLocaleConfigurationException(

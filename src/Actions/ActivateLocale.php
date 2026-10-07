@@ -19,12 +19,12 @@ final readonly class ActivateLocale
     /**
      * @throws Throwable
      */
-    public function execute(string $localeCode): void
+    public function execute(string $code): void
     {
-        DB::transaction(function () use ($localeCode) {
+        DB::transaction(function () use ($code) {
             $locale = Locale::query()
                 ->lockForUpdate()
-                ->findOrFail($localeCode);
+                ->findOrFail($code);
 
             if (! $locale->canBeActivated()) {
                 throw new LocaleCannotBeActivatedException($locale->getKey());

@@ -8,15 +8,17 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tipi\Localization\Actions\SetCurrentLocale;
+use Tipi\Localization\Config\LocalizationConfig;
 use Tipi\Localization\Exceptions\LocaleNotFoundException;
 use Tipi\Localization\Exceptions\UnsupportedLocaleException;
 use Tipi\Localization\LocaleRegistry;
 use Tipi\Support\Locale;
 
-final readonly class SetLocale
+final readonly class SetRememberedLocale
 {
     public function __construct(
         private LocaleRegistry $locales,
+        private LocalizationConfig $config,
         private SetCurrentLocale $setCurrentLocale,
     ) {}
 
@@ -31,20 +33,30 @@ final readonly class SetLocale
 
     private function resolve(Request $request): Locale
     {
-        $code = $request->route('locale');
+        $code = $request->session()->get(
+            $this->config->localeSession,
+        );
 
-        if ($code === null) {
-            return $this->locales->default();
+        if (is_string($code)) {
+            try {
+                return $this->locales->supportedLocale($code);
+            } catch (LocaleNotFoundException|UnsupportedLocaleException) {
+                //
+            }
         }
 
-        if (! is_string($code)) {
-            abort(404);
+        $code = $request->cookie(
+            $this->config->localeCookie,
+        );
+
+        if (is_string($code)) {
+            try {
+                return $this->locales->supportedLocale($code);
+            } catch (LocaleNotFoundException|UnsupportedLocaleException) {
+                //
+            }
         }
 
-        try {
-            return $this->locales->supportedLocale($code);
-        } catch (LocaleNotFoundException|UnsupportedLocaleException) {
-            abort(404);
-        }
+        return $this->locales->default();
     }
 }

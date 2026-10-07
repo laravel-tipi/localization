@@ -21,10 +21,17 @@ final readonly class RememberLocale
     {
         $response = $next($request);
 
+        $locale = $this->resolver->currentCode();
+
+        $request->session()->put(
+            $this->config->localeSession,
+            $locale,
+        );
+
         $response->headers->setCookie(
             cookie(
                 name: $this->config->localeCookie,
-                value: $this->resolver->currentCode(),
+                value: $locale,
                 minutes: $this->config->localeCookieMinutes,
             ),
         );

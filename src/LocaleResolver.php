@@ -30,4 +30,9 @@ final class LocaleResolver
             app()->getLocale(),
         );
     }
+
+    public function set(Locale $locale): void
+    {
+        $this->locale = $locale;
+    }
 }

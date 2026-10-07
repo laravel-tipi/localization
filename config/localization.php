@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 use Tipi\Localization\Models\Locale;
 use Tipi\Localization\Policies\LocalePolicy;
 
@@ -120,6 +121,10 @@ return [
     'cookie' => [
         'name' => 'locale',
         'minutes' => 60 * 24 * 365,
+    ],
+
+    'session' => [
+        'key' => 'locale',
     ],
 
     'locale_policy' => LocalePolicy::class,

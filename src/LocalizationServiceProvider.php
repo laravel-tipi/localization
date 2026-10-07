@@ -33,6 +33,7 @@ final class LocalizationServiceProvider extends ServiceProvider
                 negotiatedRootRouteName: (string) config('localization.negotiated_root_route_name'),
                 localeCookie: (string) config('localization.cookie.name'),
                 localeCookieMinutes: (int) config('localization.cookie.minutes'),
+                localeSession: (string) config('localization.session.key'),
                 localePolicy: (string) config('localization.locale_policy'),
                 localeModel: (string) config('localization.locale_model'),
             ),

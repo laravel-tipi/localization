@@ -26,6 +26,7 @@ final readonly class LocalizationConfig
         public string $negotiatedRootRouteName,
         public string $localeCookie,
         public int $localeCookieMinutes,
+        public string $localeSession,
         public string $localePolicy,
         public string $localeModel,
     ) {}

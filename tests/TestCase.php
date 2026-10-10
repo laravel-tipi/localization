@@ -33,4 +33,11 @@ abstract class TestCase extends Orchestra
 
         $app['config']->set('localization.locales_driver', 'database');
     }
+
+    protected function defineDatabaseMigrations(): void
+    {
+        $this->loadMigrationsFrom(
+            __DIR__.'/../database/migrations',
+        );
+    }
 }

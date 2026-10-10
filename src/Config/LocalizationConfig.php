@@ -29,5 +29,6 @@ final readonly class LocalizationConfig
         public string $localeSession,
         public string $localePolicy,
         public string $localeModel,
+        public string $localesTable,
     ) {}
 }

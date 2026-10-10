@@ -130,4 +130,10 @@ return [
     'locale_policy' => LocalePolicy::class,
 
     'locale_model' => Locale::class,
+
+    'locales_table' => 'locales',
+
+    /**
+     * TODO: let use configure the name of the locales table
+     */
 ];

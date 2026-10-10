@@ -133,7 +133,7 @@ return [
 
     'locales_table' => 'locales',
 
-    /**
-     * TODO: let use configure the name of the locales table
-     */
+/**
+ * TODO: let use configure the name of the locales table
+ */
 ];

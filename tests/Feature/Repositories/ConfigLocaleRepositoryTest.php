@@ -39,6 +39,7 @@ it('returns configured locales', function () {
         localeSession: 'locale',
         localePolicy: LocalePolicy::class,
         localeModel: Locale::class,
+        localesTable: 'locales',
     );
 
     $repository = new ConfigLocaleRepository($config);
@@ -82,6 +83,7 @@ it('uses default locale values for optional configuration', function () {
         localeSession: 'locale',
         localePolicy: LocalePolicy::class,
         localeModel: Locale::class,
+        localesTable: 'locales',
     );
 
     $locale = (new ConfigLocaleRepository($config))
@@ -108,6 +110,7 @@ it('throws when no locales are configured', function () {
         localeSession: 'locale',
         localePolicy: LocalePolicy::class,
         localeModel: Locale::class,
+        localesTable: 'locales',
     );
 
     (new ConfigLocaleRepository($config))->all();
@@ -132,6 +135,7 @@ it('throws when no default locale is configured', function () {
         localeSession: 'locale',
         localePolicy: LocalePolicy::class,
         localeModel: Locale::class,
+        localesTable: 'locales',
     );
 
     (new ConfigLocaleRepository($config))->all();
@@ -150,6 +154,7 @@ it('rejects invalid locale configuration', function (array $locale) {
         localeSession: 'locale',
         localePolicy: LocalePolicy::class,
         localeModel: Locale::class,
+        localesTable: 'locales',
     );
 
     (new ConfigLocaleRepository($config))->all();
@@ -214,6 +219,7 @@ it('rejects duplicate locale codes', function () {
         localeSession: 'locale',
         localePolicy: LocalePolicy::class,
         localeModel: Locale::class,
+        localesTable: 'locales',
     );
 
     (new ConfigLocaleRepository($config))->all();
@@ -238,6 +244,7 @@ it('rejects a default locale that is not defined', function () {
         localeSession: 'locale',
         localePolicy: LocalePolicy::class,
         localeModel: Locale::class,
+        localesTable: 'locales',
     );
 
     (new ConfigLocaleRepository($config))->all();

@@ -32,6 +32,7 @@ final readonly class UpdateLocale
 
             $locale->name = $data->name;
             $locale->native_name = $data->nativeName;
+            $locale->native_abbreviation = $data->nativeAbbreviation;
             $locale->country_code = $data->countryCode;
             $locale->text_direction = $data->textDirection;
 

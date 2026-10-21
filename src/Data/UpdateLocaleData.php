@@ -12,6 +12,7 @@ final readonly class UpdateLocaleData implements DataTransferObject
     public function __construct(
         public string $name,
         public string $nativeName,
+        public ?string $nativeAbbreviation,
         public ?string $countryCode,
         public TextDirection $textDirection,
     ) {}
@@ -21,7 +22,12 @@ final readonly class UpdateLocaleData implements DataTransferObject
         return new self(
             name: $data['name'],
             nativeName: $data['native_name'],
-            countryCode: $data['country_code'] ?? null,
+            nativeAbbreviation: isset($data['native_abbreviation'])
+                ? (string) $data['native_abbreviation']
+                : null,
+            countryCode: isset($data['country_code'])
+                ? (string) $data['country_code']
+                : null,
             textDirection: TextDirection::from(
                 $data['text_direction'] ?? TextDirection::Ltr->value,
             ),
@@ -33,6 +39,7 @@ final readonly class UpdateLocaleData implements DataTransferObject
         return [
             'name' => $this->name,
             'native_name' => $this->nativeName,
+            'native_abbreviation' => $this->nativeAbbreviation,
             'country_code' => $this->countryCode,
             'text_direction' => $this->textDirection->value,
         ];

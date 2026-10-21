@@ -14,6 +14,7 @@ it('returns locales keyed by their code', function () {
         'code' => 'en',
         'name' => 'English',
         'native_name' => 'English',
+        'native_abbreviation' => 'EN',
         'country_code' => 'GB',
         'text_direction' => 'ltr',
         'is_active' => true,
@@ -24,6 +25,7 @@ it('returns locales keyed by their code', function () {
         'code' => 'ka',
         'name' => 'Georgian',
         'native_name' => 'ქართული',
+        'native_abbreviation' => 'ქა',
         'country_code' => 'GE',
         'text_direction' => 'ltr',
         'is_active' => true,
@@ -42,6 +44,7 @@ it('converts locale models to locale objects', function () {
         'code' => 'en',
         'name' => 'English',
         'native_name' => 'English',
+        'native_abbreviation' => 'EN',
         'country_code' => 'GB',
         'text_direction' => 'ltr',
         'is_active' => true,
@@ -56,6 +59,7 @@ it('converts locale models to locale objects', function () {
         ->code->toBe('en')
         ->name->toBe('English')
         ->nativeName->toBe('English')
+        ->nativeAbbreviation->toBe('EN')
         ->countryCode->toBe('GB')
         ->textDirection->toBe(TextDirection::Ltr)
         ->isActive()->toBeTrue()
@@ -67,6 +71,7 @@ it('returns inactive locales as well', function () {
         'code' => 'en',
         'name' => 'English',
         'native_name' => 'English',
+        'native_abbreviation' => 'EN',
         'is_active' => false,
         'is_default' => false,
     ]);

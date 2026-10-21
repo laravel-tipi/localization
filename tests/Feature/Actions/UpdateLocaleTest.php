@@ -30,6 +30,7 @@ it('updates a locale', function () {
         new UpdateLocaleData(
             name: 'Updated English',
             nativeName: 'Updated Native Name',
+            nativeAbbreviation: 'EN',
             countryCode: 'US',
             textDirection: TextDirection::Rtl,
         ),
@@ -40,6 +41,7 @@ it('updates a locale', function () {
         ->code->toBe('en')
         ->name->toBe('Updated English')
         ->native_name->toBe('Updated Native Name')
+        ->native_abbreviation->toBe('EN')
         ->country_code->toBe('US')
         ->text_direction->toBe(TextDirection::Rtl);
 
@@ -47,6 +49,7 @@ it('updates a locale', function () {
         'code' => 'en',
         'name' => 'Updated English',
         'native_name' => 'Updated Native Name',
+        'native_abbreviation' => 'EN',
         'country_code' => 'US',
         'text_direction' => 'rtl',
     ]);
@@ -58,6 +61,7 @@ it('does not change the locale code', function () {
         new UpdateLocaleData(
             name: 'Updated English',
             nativeName: 'English',
+            nativeAbbreviation: 'EN',
             countryCode: 'US',
             textDirection: TextDirection::Ltr,
         ),
@@ -74,6 +78,7 @@ it('does not change active or default state', function () {
         new UpdateLocaleData(
             name: 'Updated English',
             nativeName: 'English',
+            nativeAbbreviation: 'EN',
             countryCode: 'US',
             textDirection: TextDirection::Ltr,
         ),
@@ -92,6 +97,7 @@ it('allows the country code to be removed', function () {
         new UpdateLocaleData(
             name: 'English',
             nativeName: 'English',
+            nativeAbbreviation: 'EN',
             countryCode: null,
             textDirection: TextDirection::Ltr,
         ),
@@ -108,6 +114,7 @@ it('throws when the locale does not exist', function () {
         new UpdateLocaleData(
             name: 'Georgian',
             nativeName: 'ქართული',
+            nativeAbbreviation: 'ქა',
             countryCode: 'GE',
             textDirection: TextDirection::Ltr,
         ),
@@ -124,6 +131,7 @@ it('flushes the locale registry after updating a locale', function () {
         new UpdateLocaleData(
             name: 'Updated English',
             nativeName: 'English',
+            nativeAbbreviation: 'EN',
             countryCode: 'GB',
             textDirection: TextDirection::Ltr,
         ),

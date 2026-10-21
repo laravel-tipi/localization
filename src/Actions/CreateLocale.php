@@ -36,6 +36,7 @@ final readonly class CreateLocale
             $locale->code = $data->code;
             $locale->name = $data->name;
             $locale->native_name = $data->nativeName;
+            $locale->native_abbreviation = $data->nativeAbbreviation;
             $locale->country_code = $data->countryCode;
             $locale->text_direction = $data->textDirection;
             $locale->is_active = true;

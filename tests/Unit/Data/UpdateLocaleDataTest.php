@@ -35,6 +35,7 @@ it('converts data to an array', function () {
     $data = new UpdateLocaleData(
         name: 'English',
         nativeName: 'English',
+        nativeAbbreviation: 'EN',
         countryCode: 'GB',
         textDirection: TextDirection::Rtl,
     );
@@ -42,6 +43,7 @@ it('converts data to an array', function () {
     expect($data->toArray())->toBe([
         'name' => 'English',
         'native_name' => 'English',
+        'native_abbreviation' => 'EN',
         'country_code' => 'GB',
         'text_direction' => 'rtl',
     ]);

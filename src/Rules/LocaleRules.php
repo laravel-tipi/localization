@@ -32,6 +32,7 @@ final class LocaleRules
         return [
             'code' => 'locale code',
             'name' => 'name',
+            'native_abbreviation' => 'native abbreviation',
             'native_name' => 'native name',
             'country_code' => 'country code',
             'text_direction' => 'text direction',
@@ -50,6 +51,11 @@ final class LocaleRules
                 'required',
                 'string',
                 'max:255',
+            ],
+            'native_abbreviation' => [
+                'nullable',
+                'string',
+                'max:3',
             ],
             'country_code' => [
                 'nullable',

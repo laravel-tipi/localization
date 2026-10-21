@@ -13,6 +13,7 @@ final readonly class LocalizationConfig
      *     code: string,
      *     name: string,
      *     native_name: string,
+     *     native_abbreviation: string,
      *     country_code?: string|null,
      *     text_direction?: string,
      * }> $locales

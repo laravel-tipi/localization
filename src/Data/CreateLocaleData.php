@@ -13,6 +13,7 @@ final readonly class CreateLocaleData implements DataTransferObject
         public string $code,
         public string $name,
         public string $nativeName,
+        public ?string $nativeAbbreviation,
         public ?string $countryCode,
         public TextDirection $textDirection,
     ) {}
@@ -23,7 +24,12 @@ final readonly class CreateLocaleData implements DataTransferObject
             code: $data['code'],
             name: $data['name'],
             nativeName: $data['native_name'],
-            countryCode: $data['country_code'] ?? null,
+            nativeAbbreviation: isset($data['native_abbreviation'])
+                ? (string) $data['native_abbreviation']
+                : null,
+            countryCode: isset($data['country_code'])
+                ? (string) $data['country_code']
+                : null,
             textDirection: TextDirection::from(
                 $data['text_direction'] ?? TextDirection::Ltr->value,
             ),
@@ -36,6 +42,7 @@ final readonly class CreateLocaleData implements DataTransferObject
             'code' => $this->code,
             'name' => $this->name,
             'native_name' => $this->nativeName,
+            'native_abbreviation' => $this->nativeAbbreviation,
             'country_code' => $this->countryCode,
             'text_direction' => $this->textDirection->value,
         ];

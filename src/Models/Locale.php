@@ -39,6 +39,7 @@ class Locale extends Model
             code: $this->code,
             name: $this->name,
             nativeName: $this->native_name,
+            nativeAbbreviation: $this->native_abbreviation,
             countryCode: $this->country_code,
             textDirection: $this->text_direction,
             active: $this->is_active,

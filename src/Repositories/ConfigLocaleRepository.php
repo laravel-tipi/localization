@@ -135,6 +135,7 @@ final readonly class ConfigLocaleRepository implements LocaleRepository
             code: $config['code'],
             name: $config['name'],
             nativeName: $config['native_name'],
+            nativeAbbreviation: $config['native_abbreviation'] ?? null,
             countryCode: $config['country_code'] ?? null,
             textDirection: TextDirection::from(
                 $config['text_direction'] ?? TextDirection::Ltr->value,

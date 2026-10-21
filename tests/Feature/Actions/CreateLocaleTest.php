@@ -16,6 +16,7 @@ function createLocaleData(
     string $code = 'en',
     string $name = 'English',
     string $nativeName = 'English',
+    ?string $nativeAbbreviation = 'EN',
     ?string $countryCode = 'GB',
     TextDirection $textDirection = TextDirection::Ltr,
 ): CreateLocaleData {
@@ -23,6 +24,7 @@ function createLocaleData(
         code: $code,
         name: $name,
         nativeName: $nativeName,
+        nativeAbbreviation: $nativeAbbreviation,
         countryCode: $countryCode,
         textDirection: $textDirection,
     );
@@ -38,6 +40,7 @@ it('creates a locale', function () {
         ->code->toBe('en')
         ->name->toBe('English')
         ->native_name->toBe('English')
+        ->native_abbreviation->toBe('EN')
         ->country_code->toBe('GB')
         ->text_direction->toBe(TextDirection::Ltr)
         ->is_active->toBeTrue()
@@ -47,6 +50,7 @@ it('creates a locale', function () {
         'code' => 'en',
         'name' => 'English',
         'native_name' => 'English',
+        'native_abbreviation' => 'EN',
         'country_code' => 'GB',
         'text_direction' => 'ltr',
         'is_active' => true,

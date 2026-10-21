@@ -19,6 +19,7 @@ it('creates the expected locale columns', function () {
         'code',
         'name',
         'native_name',
+        'native_abbreviation',
         'country_code',
         'text_direction',
         'is_active',

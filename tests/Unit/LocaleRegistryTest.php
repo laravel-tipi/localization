@@ -20,6 +20,7 @@ function makeLocale(
         code: $code,
         name: $code,
         nativeName: $code,
+        nativeAbbreviation: null,
         countryCode: null,
         textDirection: TextDirection::Ltr,
         active: $active,

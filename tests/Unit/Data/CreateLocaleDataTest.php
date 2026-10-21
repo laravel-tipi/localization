@@ -39,6 +39,7 @@ it('converts data to an array', function () {
         code: 'en',
         name: 'English',
         nativeName: 'English',
+        nativeAbbreviation: 'EN',
         countryCode: 'GB',
         textDirection: TextDirection::Rtl,
     );
@@ -47,6 +48,7 @@ it('converts data to an array', function () {
         'code' => 'en',
         'name' => 'English',
         'native_name' => 'English',
+        'native_abbreviation' => 'EN',
         'country_code' => 'GB',
         'text_direction' => 'rtl',
     ]);

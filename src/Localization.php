@@ -131,4 +131,14 @@ final readonly class Localization
         return $this->locales->supported()
             ->except($this->currentCode());
     }
+
+    public function localizedUrl(
+        string $locale,
+        bool $absolute = true,
+    ): string {
+        return $this->urls->localizedUrl(
+            locale: $locale,
+            absolute: $absolute,
+        );
+    }
 }

@@ -6,6 +6,7 @@ namespace Tipi\Localization\Facades;
 
 use Closure;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Facade;
 use Tipi\Localization\LocaleRegistry;
 use Tipi\Support\Locale;
@@ -21,6 +22,8 @@ use Tipi\Support\Locale;
  * @method static Locale current()
  * @method static string currentCode()
  * @method static LocaleRegistry locales()
+ * @method static Collection<string, Locale> supportedLocales()
+ * @method static Collection<string, Locale> otherSupportedLocales()
  *
  * @see \Tipi\Localization\Localization
  */

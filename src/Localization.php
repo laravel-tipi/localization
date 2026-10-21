@@ -6,6 +6,7 @@ namespace Tipi\Localization;
 
 use Closure;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Collection;
 use Tipi\Localization\Actions\RememberCurrentLocale;
 use Tipi\Localization\Actions\SetCurrentLocale;
 use Tipi\Localization\Routing\LocalizedRouteRegistrar;
@@ -112,5 +113,22 @@ final readonly class Localization
         $this->rememberCurrentLocale->execute(request());
 
         return $locale;
+    }
+
+    /**
+     * @return Collection<string, Locale>
+     */
+    public function supportedLocales(): Collection
+    {
+        return $this->locales->supported();
+    }
+
+    /**
+     * @return Collection<string, Locale>
+     */
+    public function otherSupportedLocales(): Collection
+    {
+        return $this->locales->supported()
+            ->except($this->currentCode());
     }
 }

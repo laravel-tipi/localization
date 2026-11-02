@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use Tipi\Localization\Models\Locale;
+use Tipi\Localization\Models\LocaleContext;
+use Tipi\Localization\Policies\LocaleContextPolicy;
 use Tipi\Localization\Policies\LocalePolicy;
 
 return [
@@ -11,31 +13,26 @@ return [
     | Locales Driver
     |--------------------------------------------------------------------------
     |
-    | Choose where the package reads its locales from.
+    | Where the global locale registry is read from: "config" or "database".
     |
-    | Supported drivers: "config", "database"
-    |
-    | The "config" driver reads the locales declared below. Every configured
-    | locale is considered active. The "database" driver reads locales from
-    | the package's locales table and supports activating and deactivating
-    | locales at runtime.
+    | "config" reads the locales below; every configured locale is active.
+    | "database" reads the locales table and supports managing locales at
+    | runtime through the package actions.
     |
     */
     'locales_driver' => 'config',
 
     /*
     |--------------------------------------------------------------------------
-    | Configured Locales
+    | Configured Locales ("config" driver only)
     |--------------------------------------------------------------------------
     |
-    | These locales are used only by the "config" driver.
+    | "code" uses the package's locale-code format: "en", "en-US", "en-001",
+    | "zh-Hans" or "zh-Hans-CN" (at most 12 characters). "native_abbreviation"
+    | (max 3 characters) and "country_code" (two uppercase letters) are
+    | optional. "text_direction" is "ltr" (default) or "rtl".
     |
-    | "code" follows the package's supported locale-code format, such as
-    | "en", "en-US", "zh-Hans", or "zh-Hans-CN".
-    |
-    | "country_code" is optional and, when present, must be a two-letter
-    | uppercase country code. "text_direction" may be "ltr" or "rtl" and
-    | defaults to "ltr" when omitted.
+    | The array order is the display order.
     |
     */
     'locales' => [
@@ -47,96 +44,131 @@ return [
             'country_code' => 'GB',
             'text_direction' => 'ltr',
         ],
-        [
-            'code' => 'ka',
-            'name' => 'Georgian',
-            'native_name' => 'ქართული',
-            'native_abbreviation' => 'ქა',
-            'country_code' => 'GE',
-            'text_direction' => 'ltr',
-        ],
-        [
-            'code' => 'ru',
-            'name' => 'Russian',
-            'native_abbreviation' => 'РУ',
-            'native_name' => 'Русский',
-            'country_code' => 'RU',
-            'text_direction' => 'ltr',
-        ],
     ],
 
     /*
     |--------------------------------------------------------------------------
-    | Default Locale
+    | Global Default Locale ("config" driver only)
     |--------------------------------------------------------------------------
     |
-    | The default locale for the "config" driver. It must match one of the
-    | locale codes declared above. With the "database" driver, the default
-    | locale is determined by the locales table instead.
+    | Must be one of the configured locale codes. With the "database" driver
+    | the default is the row whose is_default column is true.
     |
     */
-    'default_locale' => 'ka',
+    'default_locale' => 'en',
 
     /*
     |--------------------------------------------------------------------------
-    | Hide Default Locale
+    | Locale Contexts
     |--------------------------------------------------------------------------
     |
-    | When enabled, the default locale is omitted from generated URLs and a
-    | prefixed default-locale URL is redirected to its canonical unprefixed
-    | URL.
+    | A context is the subset of active locales available to one interface
+    | of the application (the public site, an admin panel, ...), with its
+    | own default and its own remembered preference.
     |
-    | Example with "en" as the default locale:
+    | "contexts_driver" is "config" or "database" and is independent from
+    | "locales_driver".
     |
-    | true:  /wines,    /ka/wines
-    | false: /en/wines, /ka/wines
+    | With the "config" driver, "contexts" below is the complete list.
+    |
+    | With the "database" driver, "contexts" declares the contexts your code
+    | depends on. They always exist and cannot be deleted; until they are
+    | edited they use the definition below. Their stored definition (and any
+    | additional context) lives in the locale_contexts tables.
+    |
+    | "locales" is "*" (every active locale) or a list of codes. A list must
+    | contain the global default locale. "default" is optional; when omitted
+    | the context follows the global default locale.
+    |
+    | "default_context" names the context used by localized routes, console
+    | commands and queued jobs. It always exists ("*" unless defined below).
+    |
+    */
+    'contexts_driver' => 'config',
+
+    'default_context' => 'web',
+
+    'contexts' => [
+        'web' => [
+            'locales' => '*',
+        ],
+
+        // 'admin' => [
+        //     'locales' => ['en', 'ka'],
+        //     'default' => 'en',
+        // ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Localized Routing
+    |--------------------------------------------------------------------------
+    |
+    | "hide_default_locale": when true, the default context's default locale
+    | is served without a prefix (/wines, /ka/wines) and GET requests to the
+    | prefixed form (/en/wines) are permanently redirected.
+    |
+    | "negotiate_root_locale": when true, a request to the "root_route" without
+    | a locale prefix is redirected to the visitor's remembered or browser
+    | locale. Only that route is negotiated.
     |
     */
     'hide_default_locale' => true,
 
-    /*
-    |--------------------------------------------------------------------------
-    | Root Locale Negotiation
-    |--------------------------------------------------------------------------
-    |
-    | When enabled, requests to the configured root route may be redirected
-    | to a supported non-default locale. Locale negotiation prefers the
-    | remembered locale cookie, then the browser's Accept-Language header,
-    | and finally the default locale.
-    |
-    | Negotiation applies only to the named route configured below, not to
-    | every unprefixed localized route.
-    |
-    */
     'negotiate_root_locale' => false,
 
-    'negotiated_root_route_name' => 'home',
+    'root_route' => 'home',
 
     /*
     |--------------------------------------------------------------------------
-    | Locale Cookie
+    | Locale Switch Route
     |--------------------------------------------------------------------------
     |
-    | Localized requests remember the resolved locale in this cookie. The
-    | lifetime is expressed in minutes.
+    | GET /{uri}?redirect=/path&context=name records an explicit locale choice
+    | and redirects to a same-site path. Used by Localization::switchUrl()
+    | and Localization::switcher(). The "web" middleware group is required
+    | for the preference cookie to be written.
     |
     */
-    'cookie' => [
-        'name' => 'locale',
+    'switch_route' => [
+        'enabled' => true,
+        'uri' => 'locale/{locale}',
+        'name' => 'localization.switch',
+        'middleware' => ['web'],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Remembered Preference
+    |--------------------------------------------------------------------------
+    |
+    | Explicit choices are stored in one cookie per context, named
+    | "{cookie}_{context}" (for example "locale_web"). Visiting a localized
+    | URL never changes it. Lifetime is in minutes.
+    |
+    */
+    'preference' => [
+        'cookie' => 'locale',
         'minutes' => 60 * 24 * 365,
     ],
 
-    'session' => [
-        'key' => 'locale',
+    /*
+    |--------------------------------------------------------------------------
+    | Models and Policies
+    |--------------------------------------------------------------------------
+    |
+    | Custom models must extend the package models. Set a custom table or
+    | connection on the model itself. The default policies deny everything
+    | unless the "manage-localization" gate ability is granted.
+    |
+    */
+    'models' => [
+        'locale' => Locale::class,
+        'context' => LocaleContext::class,
     ],
 
-    'locale_policy' => LocalePolicy::class,
-
-    'locale_model' => Locale::class,
-
-    'locales_table' => 'locales',
-
-/**
- * TODO: let use configure the name of the locales table
- */
+    'policies' => [
+        'locale' => LocalePolicy::class,
+        'context' => LocaleContextPolicy::class,
+    ],
 ];

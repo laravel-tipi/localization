@@ -8,64 +8,49 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tipi\Localization\Config\LocalizationConfig;
-use Tipi\Localization\LocaleRegistry;
+use Tipi\Localization\LocaleContexts;
+use Tipi\Localization\Routing\LocalizedRouteName;
 use Tipi\Localization\Routing\LocalizedUrlGenerator;
 
+/**
+ * When the default locale is hidden, permanently redirects GET/HEAD
+ * requests for "/{default}/..." to the canonical unprefixed URL. Other
+ * methods are served as-is so form submissions are never lost.
+ *
+ * @internal
+ */
 final readonly class RedirectDefaultLocale
 {
     public function __construct(
-        private LocaleRegistry $locales,
+        private LocaleContexts $contexts,
         private LocalizationConfig $config,
         private LocalizedUrlGenerator $urls,
     ) {}
 
     public function handle(Request $request, Closure $next): Response
     {
-        if (! $this->shouldRedirect($request)) {
+        if (
+            ! $this->config->hideDefaultLocale
+            || ! $request->isMethodSafe()
+            || $request->route('locale') !== $this->contexts->default()->defaultCode()
+        ) {
             return $next($request);
         }
 
-        return redirect()->to(
-            $this->redirectUrl($request),
-        );
-    }
-
-    private function shouldRedirect(Request $request): bool
-    {
-        if (! $this->config->hideDefaultLocale) {
-            return false;
-        }
-
-        $code = $request->route('locale');
-
-        if (! is_string($code)) {
-            return false;
-        }
-
-        return $code === $this->locales->defaultCode();
-    }
-
-    private function redirectUrl(Request $request): string
-    {
         $route = $request->route();
+        $name = LocalizedRouteName::logical($route?->getName());
 
-        $name = str($route->getName())
-            ->after('__localized.locale.')
-            ->toString();
+        if ($name === null) {
+            return $next($request);
+        }
 
         $parameters = $route->parameters();
 
         unset($parameters['locale']);
 
-        $parameters = [
-            ...$request->query(),
-            ...$parameters,
-        ];
-
-        return $this->urls->route(
-            name: $name,
-            parameters: $parameters,
-            locale: $this->locales->defaultCode(),
+        return redirect()->to(
+            $this->urls->route($name, [...$request->query(), ...$parameters], $this->contexts->default()->default()),
+            301,
         );
     }
 }

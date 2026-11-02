@@ -4,39 +4,45 @@ declare(strict_types=1);
 
 namespace Tipi\Localization\Actions;
 
-use Illuminate\Support\Facades\DB;
-use Throwable;
-use Tipi\Localization\Exceptions\LocaleCannotBeActivatedException;
-use Tipi\Localization\LocaleModelResolver;
-use Tipi\Localization\LocaleRegistry;
+use Tipi\Localization\Database\LocalizationDatabase;
+use Tipi\Localization\Exceptions\InvalidLocaleOperationException;
+use Tipi\Localization\Exceptions\InvalidLocalizedRouteException;
+use Tipi\Localization\Exceptions\LocaleNotFoundException;
+use Tipi\Localization\Models\Locale;
+use Tipi\Localization\Routing\LocalizedRoutes;
 
+/**
+ * Activates a locale. It becomes available in every context that lists
+ * it, and in every "*" context.
+ */
 final readonly class ActivateLocale
 {
     public function __construct(
-        private LocaleRegistry $locales,
-        private LocaleModelResolver $modelResolver,
+        private LocalizationDatabase $database,
+        private LocalizedRoutes $routes,
     ) {}
 
     /**
-     * @throws Throwable
+     * @throws LocaleNotFoundException
+     * @throws InvalidLocaleOperationException
+     * @throws InvalidLocalizedRouteException when the code equals a static localized route segment
      */
-    public function execute(string $code): void
+    public function execute(string $code): Locale
     {
-        DB::transaction(function () use ($code) {
-            $model = $this->modelResolver->class();
+        $this->database->ensureLocalesDriver();
+        $this->routes->ensureNotReserved($code);
 
-            $locale = $model::query()
-                ->lockForUpdate()
-                ->findOrFail($code);
+        return $this->database->transaction(function () use ($code): Locale {
+            $locale = $this->database->lockLocale($code);
 
-            if (! $locale->canBeActivated()) {
-                throw new LocaleCannotBeActivatedException($locale->getKey());
+            if ($locale->is_active) {
+                throw new InvalidLocaleOperationException("Locale [{$code}] is already active.");
             }
 
             $locale->is_active = true;
             $locale->save();
-        });
 
-        $this->locales->flush();
+            return $locale;
+        });
     }
 }

@@ -10,6 +10,8 @@ use Tipi\Support\Locale;
 interface LocaleRepository
 {
     /**
+     * Every locale, active or not, keyed by code in display order.
+     *
      * @return Collection<string, Locale>
      */
     public function all(): Collection;

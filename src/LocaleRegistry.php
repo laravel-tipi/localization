@@ -6,11 +6,17 @@ namespace Tipi\Localization;
 
 use Illuminate\Support\Collection;
 use Tipi\Localization\Contracts\LocaleRepository;
-use Tipi\Localization\Exceptions\DefaultLocaleNotDefinedException;
+use Tipi\Localization\Exceptions\DefaultLocaleMissingException;
 use Tipi\Localization\Exceptions\LocaleNotFoundException;
 use Tipi\Localization\Exceptions\UnsupportedLocaleException;
 use Tipi\Support\Locale;
 
+/**
+ * The global locale registry: every locale that exists, whether it is
+ * active, and the global default. It is independent from contexts.
+ *
+ * Memoized for one request/job (scoped binding); flush() after writes.
+ */
 final class LocaleRegistry
 {
     /**
@@ -23,6 +29,8 @@ final class LocaleRegistry
     ) {}
 
     /**
+     * Every locale, active or not, keyed by code in display order.
+     *
      * @return Collection<string, Locale>
      */
     public function all(): Collection
@@ -30,56 +38,69 @@ final class LocaleRegistry
         return $this->locales ??= $this->repository->all();
     }
 
+    /**
+     * @return Collection<string, Locale>
+     */
+    public function active(): Collection
+    {
+        return $this->all()->filter(
+            fn (Locale $locale): bool => $locale->isActive(),
+        );
+    }
+
+    /**
+     * @return list<string>
+     */
+    public function activeCodes(): array
+    {
+        return $this->active()->keys()->all();
+    }
+
+    public function find(string $code): ?Locale
+    {
+        return $this->all()->get($code);
+    }
+
+    /**
+     * @throws LocaleNotFoundException
+     */
     public function get(string $code): Locale
     {
-        $locale = $this->all()->get($code);
+        return $this->find($code) ?? throw new LocaleNotFoundException($code);
+    }
 
-        if ($locale === null) {
-            throw new LocaleNotFoundException(code: $code);
+    public function isActive(string $code): bool
+    {
+        return $this->find($code)?->isActive() === true;
+    }
+
+    /**
+     * @throws LocaleNotFoundException
+     * @throws UnsupportedLocaleException
+     */
+    public function getActive(string $code): Locale
+    {
+        $locale = $this->get($code);
+
+        if (! $locale->isActive()) {
+            throw UnsupportedLocaleException::inactive($code);
         }
 
         return $locale;
     }
 
     /**
-     * @return Collection<string, Locale>
+     * The global default locale. It is always active.
+     *
+     * @throws DefaultLocaleMissingException
      */
-    public function supported(): Collection
-    {
-        return $this->all()
-            ->filter(
-                fn (Locale $locale): bool => $locale->isActive(),
-            );
-    }
-
-    public function supportedCodes(): array
-    {
-        return $this->supported()->keys()->all();
-    }
-
-    public function supportedLocale(string $code): Locale
-    {
-        $locale = $this->get($code);
-
-        if (! $locale->isActive()) {
-            throw new UnsupportedLocaleException(code: $code);
-        }
-
-        return $locale;
-    }
-
     public function default(): Locale
     {
-        $locale = $this->all()
-            ->first(
-                fn (Locale $locale): bool => $locale->isDefault(),
-            );
+        $locale = $this->all()->first(
+            fn (Locale $locale): bool => $locale->isDefault() && $locale->isActive(),
+        );
 
-        if ($locale === null) {
-            throw new DefaultLocaleNotDefinedException;
-        }
-
-        return $locale;
+        return $locale ?? throw new DefaultLocaleMissingException;
     }
 
     public function defaultCode(): string

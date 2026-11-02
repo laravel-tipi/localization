@@ -4,12 +4,26 @@ declare(strict_types=1);
 
 namespace Tipi\Localization\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Tipi\Support\Enums\TextDirection;
 use Tipi\Support\Locale as LocaleData;
 
+/**
+ * @property string $code
+ * @property string $name
+ * @property string $native_name
+ * @property ?string $native_abbreviation
+ * @property ?string $country_code
+ * @property TextDirection $text_direction
+ * @property int $position
+ * @property bool $is_active
+ * @property bool $is_default
+ */
 class Locale extends Model
 {
+    protected $table = 'locales';
+
     protected $primaryKey = 'code';
 
     public $incrementing = false;
@@ -19,20 +33,31 @@ class Locale extends Model
     public $timestamps = false;
 
     /**
-     * @var null|string
+     * Internal column used by the MySQL/MariaDB "one default" constraint.
+     *
+     * @var list<string>
      */
-    protected $table = 'locales';
+    protected $hidden = ['default_guard'];
 
     protected function casts(): array
     {
         return [
             'text_direction' => TextDirection::class,
-            'is_active' => 'bool',
-            'is_default' => 'bool',
+            'position' => 'integer',
+            'is_active' => 'boolean',
+            'is_default' => 'boolean',
         ];
     }
 
-    // helpers
+    /**
+     * @param  Builder<static>  $query
+     * @return Builder<static>
+     */
+    public function scopeOrdered(Builder $query): Builder
+    {
+        return $query->orderBy('position')->orderBy('code');
+    }
+
     public function toLocale(): LocaleData
     {
         return new LocaleData(
@@ -47,19 +72,9 @@ class Locale extends Model
         );
     }
 
-    public function getLocaleCode(): string
-    {
-        return $this->getKey();
-    }
-
     public function isActive(): bool
     {
         return $this->is_active;
-    }
-
-    public function isInactive(): bool
-    {
-        return ! $this->isActive();
     }
 
     public function isDefault(): bool
@@ -67,24 +82,30 @@ class Locale extends Model
         return $this->is_default;
     }
 
-    public function canBeMadeDefault(): bool
-    {
-        return ! $this->isDefault() && $this->isActive();
-    }
+    /*
+     * The checks below cover the locale's own state, which is enough for
+     * showing or hiding buttons. The actions also enforce context
+     * invariants (for example: a context default cannot be deactivated)
+     * and throw InvalidLocaleOperationException with the reason.
+     */
 
     public function canBeActivated(): bool
     {
-        return $this->isInactive();
+        return ! $this->is_active;
     }
 
     public function canBeDeactivated(): bool
     {
-        return $this->isActive() && ! $this->isDefault();
+        return $this->is_active && ! $this->is_default;
+    }
+
+    public function canBeMadeDefault(): bool
+    {
+        return $this->is_active && ! $this->is_default;
     }
 
     public function canBeDeleted(): bool
     {
-        return $this->isInactive()
-        && ! $this->isDefault();
+        return ! $this->is_active && ! $this->is_default;
     }
 }

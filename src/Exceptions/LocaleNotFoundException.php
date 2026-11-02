@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Tipi\Localization\Exceptions;
 
-final class LocaleNotFoundException extends LocaleException
+use RuntimeException;
+
+final class LocaleNotFoundException extends RuntimeException implements LocalizationException
 {
-    public function __construct(string $code)
-    {
-        parent::__construct("Locale [$code] not found");
+    public function __construct(
+        public readonly string $locale,
+    ) {
+        parent::__construct("Locale [{$locale}] does not exist.");
     }
 }

@@ -4,21 +4,64 @@ declare(strict_types=1);
 
 namespace Tipi\Localization\Routing;
 
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\UrlGenerator;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
+use Illuminate\Routing\Router;
+use Illuminate\Support\Arr;
 use Tipi\Localization\Config\LocalizationConfig;
-use Tipi\Localization\Exceptions\CurrentRouteCannotBeLocalizedException;
-use Tipi\Localization\LocaleRegistry;
-use Tipi\Localization\LocaleResolver;
+use Tipi\Localization\Exceptions\InvalidLocalizedRouteException;
+use Tipi\Localization\LocaleContext;
+use Tipi\Localization\LocaleContexts;
+use Tipi\Support\Locale;
 
+/**
+ * URLs for localized routes. Localized routes belong to the default
+ * context; its default locale is the one hidden from URLs.
+ *
+ * @internal Use the Localization facade.
+ */
 final readonly class LocalizedUrlGenerator
 {
     public function __construct(
         private UrlGenerator $url,
-        private LocaleRegistry $locales,
-        private LocaleResolver $resolver,
+        private LocaleContexts $contexts,
         private LocalizationConfig $config,
+        private Application $app,
+        private Router $router,
     ) {}
+
+    /**
+     * Whether a logical localized route name exists.
+     */
+    public function has(string $name): bool
+    {
+        return $this->router->has(LocalizedRouteName::prefixed($name));
+    }
+
+    /**
+     * Laravel's missing-named-route hook: makes route('wines.show', [...])
+     * work for logical localized names. Laravel calls it only after its own
+     * lookup failed, so regular routes are never affected. A "locale"
+     * parameter (code or Locale) selects the locale; otherwise the current
+     * locale is used.
+     */
+    public function resolveMissing(string $name, mixed $parameters, bool $absolute): ?string
+    {
+        if (! $this->has($name)) {
+            return null;
+        }
+
+        $parameters = Arr::wrap($parameters);
+        $locale = Arr::pull($parameters, 'locale');
+
+        if ($locale !== null && ! is_string($locale) && ! $locale instanceof Locale) {
+            throw InvalidLocalizedRouteException::invalidLocaleParameter($locale);
+        }
+
+        return $this->route($name, $parameters, $locale, $absolute);
+    }
 
     /**
      * @param  array<string, mixed>  $parameters
@@ -26,60 +69,40 @@ final readonly class LocalizedUrlGenerator
     public function route(
         string $name,
         array $parameters = [],
-        ?string $locale = null,
+        string|Locale|null $locale = null,
         bool $absolute = true,
     ): string {
-        $locale = $locale === null
-            ? $this->resolver->current()
-            : $this->locales->supportedLocale($locale);
+        $context = $this->contexts->default();
+        $locale = $this->localeFor($context, $locale);
 
-        if ($this->config->hideDefaultLocale && $locale->isDefault()) {
-            return $this->url->route(
-                "__localized.default.$name",
-                $parameters,
-                $absolute,
-            );
+        if ($this->config->hideDefaultLocale && $context->isDefault($locale)) {
+            return $this->url->route(LocalizedRouteName::unprefixed($name), $parameters, $absolute);
         }
 
         return $this->url->route(
-            "__localized.locale.$name",
-            [
-                'locale' => $locale->code,
-                ...$parameters,
-            ],
+            LocalizedRouteName::prefixed($name),
+            ['locale' => $locale->code, ...$parameters],
             $absolute,
         );
     }
 
-    public function localizedUrl(
-        string $locale,
-        bool $absolute = true,
-    ): string {
-        $route = request()->route();
+    /**
+     * The current page in another locale, or null when the current request
+     * is not on a localized route (error pages, admin pages, console).
+     */
+    public function current(Request $request, string|Locale $locale, bool $absolute = true): ?string
+    {
+        $route = $request->route();
 
         if (! $route instanceof Route) {
-            throw CurrentRouteCannotBeLocalizedException::routeNotFound();
+            return null;
         }
 
-        $name = $route->getName();
+        $name = LocalizedRouteName::logical($route->getName());
 
         if ($name === null) {
-            throw CurrentRouteCannotBeLocalizedException::routeNotNamed();
+            return null;
         }
-
-        $name = match (true) {
-            str_starts_with($name, '__localized.default.') => substr(
-                $name,
-                strlen('__localized.default.'),
-            ),
-
-            str_starts_with($name, '__localized.locale.') => substr(
-                $name,
-                strlen('__localized.locale.'),
-            ),
-
-            default => throw CurrentRouteCannotBeLocalizedException::routeNotLocalized(),
-        };
 
         $parameters = $route->parameters();
 
@@ -87,12 +110,18 @@ final readonly class LocalizedUrlGenerator
 
         return $this->route(
             name: $name,
-            parameters: [
-                ...request()->query(),
-                ...$parameters,
-            ],
+            parameters: [...$request->query(), ...$parameters],
             locale: $locale,
             absolute: $absolute,
         );
+    }
+
+    private function localeFor(LocaleContext $context, string|Locale|null $locale): Locale
+    {
+        if ($locale !== null) {
+            return $context->get($locale);
+        }
+
+        return $context->find($this->app->getLocale()) ?? $context->default();
     }
 }

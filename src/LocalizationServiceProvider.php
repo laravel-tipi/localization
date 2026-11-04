@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tipi\Localization;
 
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Foundation\Application as LaravelApplication;
+use Illuminate\Contracts\Foundation\CachesRoutes;
 use Illuminate\Routing\Router;
 use Illuminate\Routing\UrlGenerator;
 use Illuminate\Support\Facades\Gate;
@@ -87,8 +87,8 @@ final class LocalizationServiceProvider extends PackageServiceProvider
         // Localization::routes(). route:cache boots a fresh application,
         // so a collision fails the cache build; a cached application is
         // not checked again.
-        $this->app->booted(function (LaravelApplication $app): void {
-            if (! $app->routesAreCached()) {
+        $this->app->booted(function (Application $app): void {
+            if (! ($app instanceof CachesRoutes && $app->routesAreCached())) {
                 $app->make(LocalizedRoutes::class)->validate();
             }
         });

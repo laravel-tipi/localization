@@ -1,8 +1,13 @@
 # Changelog
 
-## Unreleased (1.0.0)
+## Unreleased (0.2.1)
 
-First stable release candidate. See [UPGRADE.md](UPGRADE.md) for breaking changes.
+### Fixed
+- Requires `laravel-tipi/support` ^1.0.12: earlier versions lack `Locale::$nativeAbbreviation`, which the locale repositories pass.
+
+## 0.2.0
+
+A rewrite around locale contexts. It shares no configuration or schema with 0.1 and has no upgrade path from it: install it as a new package.
 
 ### Added
 - Laravel's `route()`, `to_route()`, `redirect()->route()` and signed URLs resolve logical localized names (via `resolveMissingNamedRoutesUsing`), with an optional `locale` parameter. `Localization::hasRoute()`.
@@ -19,7 +24,6 @@ First stable release candidate. See [UPGRADE.md](UPGRADE.md) for breaking change
 
 ### Removed
 - `localized_route()` helper (use `route()`).
-- Pre-V1 schema upgrades: `create_locales_table` and `create_locale_contexts_tables` are the V1 schema, with no upgrade migration (see UPGRADE.md).
 
 ### Fixed
 - Negotiation fell back to the first locale instead of the default, and crashed on regional codes.

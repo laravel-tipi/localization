@@ -27,7 +27,7 @@ php artisan vendor:publish --tag=localization-migrations
 php artisan migrate
 ```
 
-The package does not run migrations automatically. Two migrations are published, and together they are the complete V1 schema:
+The package does not run migrations automatically. Two migrations are published, and together they are the complete schema:
 
 | Migration | Purpose |
 |---|---|
@@ -481,10 +481,6 @@ All of them implement `Tipi\Localization\Exceptions\LocalizationException`.
 | `InvalidLocalizedRouteException` | Unnamed, duplicate or colliding localized route names; a locale code equal to a reserved static segment; a malformed `locale` route parameter |
 
 Unknown or unsupported locales in URLs and on the switch endpoint return 404 rather than throwing.
-
-## Upgrading
-
-See [UPGRADE.md](UPGRADE.md).
 
 ## Testing and code style
 

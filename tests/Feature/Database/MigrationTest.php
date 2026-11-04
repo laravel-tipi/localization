@@ -6,7 +6,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-it('creates the V1 locales and context tables', function () {
+it('creates the locales and context tables', function () {
     expect(Schema::hasColumns('locales', ['code', 'name', 'native_name', 'native_abbreviation', 'country_code', 'text_direction', 'position', 'is_active', 'is_default']))->toBeTrue()
         ->and(Schema::hasColumns('locale_contexts', ['name', 'all_locales', 'default_locale']))->toBeTrue()
         ->and(Schema::hasColumns('locale_context_locales', ['context', 'locale']))->toBeTrue()
